@@ -96,7 +96,7 @@ MediaPlayer.dependencies.FragmentLoader = function () {
                     latency = (request.firstByteDate.getTime() - request.requestStartDate.getTime());
                     download = (request.requestEndDate.getTime() - request.firstByteDate.getTime());
 
-                    self.debug.log("Baseline - loaded " + request.streamType + ":" + request.type + ":" + request.startTime + " (" + req.status + ", " + latency + "ms, " + download + "ms)");
+                    self.debug.log("Baseline - loaded " + request.quality + request.streamType + ":" + request.type + ":" + request.startTime + " (" + req.status + ", " + latency + "ms, " + download + "ms)");
 
                     httpRequestMetrics.tresponse = request.firstByteDate;
                     httpRequestMetrics.tfinish = request.requestEndDate;
@@ -113,6 +113,13 @@ MediaPlayer.dependencies.FragmentLoader = function () {
                         data: bytes,
                         request: request
                     });
+                    
+                    self.fragmentController.process(response.data).then(
+            				function (data) {
+            					
+            			}
+            		);
+                    
                     
                 };
 
@@ -170,6 +177,62 @@ MediaPlayer.dependencies.FragmentLoader = function () {
                 };
 
                 req.send();
+        },
+        
+        insertThroughput3Seg = function (now, repBitrate, req, downloadTime)  {
+        	var self = this, metricsBaselineThrough, through, segDuration;
+
+            segDuration = req.mediaduration;
+           	through = (repBitrate * segDuration)/downloadTime; 
+           	           	
+           	metricsBaselineThrough = self.metricsBaselinesModel.getMetricsBaselineFor(type).Through3Seg;
+			//self.debug.log("Baseline - Tamanho do Vetor Through3Seg: " + metricsBaselineThrough.length +" Type: " +type);
+      
+           	if(metricsBaselineThrough.length >= 3)
+           		metricsBaselineThrough.shift();
+            
+           	self.metricsBaselinesModel.addThroughput3Seg(type, req, now, through);
+        }, 
+        
+        insertThroughSeg = function (now, repBitrate, req, downloadTime) {
+        	var through, segDuration, self = this, metricsBaselineThrough;
+        	
+        	metricsBaselineThrough = self.metricsBaselinesModel.getMetricsBaselineFor(type).ThroughSeg;
+			//self.debug.log("Baseline - Tamanho do Vetor ThroughSeg: " + metricsBaselineThrough.length +" Type: " +type);
+        	
+        	segDuration = req.mediaduration; 
+        	through = (repBitrate * segDuration)/downloadTime; 
+       
+        	self.metricsBaselinesModel.addThroughputSeg(type, req, now, through);
+                       
+        }, 
+        
+        preInsertThroughSeg = function (metrics) {
+        	var self = this, currentRep, qual, repBitrate, req, downloadTime, now = new Date();
+
+        	req = self.metricsExt.getCurrentHttpRequest(metrics);
+            
+   			if (req != null) {
+   				if (req.mediaduration != null ||
+   						req.mediaduration != undefined ||
+   						req.mediaduration > 0 ) {
+    		
+   					downloadTime = req.tfinish.getTime() - req.tresponse.getTime();
+   					self.debug.log("downloadTime: " + downloadTime + " ms");
+            
+   					qual = self.abrController.getQualityFor(type);
+   					self.debug.log("qual: " + qual);
+            
+   					currentRep = self.manifestExt.getRepresentationFor1(qual, data);
+   					self.debug.log("currentRep: " + currentRep.id);
+        	
+   					repBitrate = self.manifestExt.getBandwidth1(currentRep);
+   					self.debug.log("repBitrate: " + repBitrate);
+
+   					//insertThroughput3Seg.call(self, now, repBitrate, req, downloadTime);
+   					//insertThroughSeg.call(self, now, repBitrate, req, downloadTime);
+   				}
+   			}
         },
         
         checkForExistence = function(request) {

@@ -15,7 +15,7 @@ MediaPlayer.rules.DownloadSimpleRule = function () {
     "use strict";
     
         var runningFastStart=true,
-        	deltaTime=10000,
+        	deltaTime=10000,'  
         	deltaBuffer=1000, 
         	time1 = 0, 
         	t1 = 0,
@@ -28,11 +28,9 @@ MediaPlayer.rules.DownloadSimpleRule = function () {
 			//self.debug.log("lastRequest.range: " + lastRequest.range);
 
 	        metricsBaselineThrough3Seg = self.metricsBaselinesModel.getMetricsBaselineFor(lastRequest.stream).Through3Seg;
-			self.debug.log("Baseline - Tamanho do Vetor Through3Seg: " + metricsBaselineThrough3Seg.length);
 
 	        metricsBaselineThrough = self.metricsBaselinesModel.getMetricsBaselineFor(lastRequest.stream).ThroughSeg;
-			self.debug.log("Baseline - Tamanho do Vetor ThroughSeg: " + metricsBaselineThrough.length);
-
+	        
 	        if(metricsBaselineThrough.length > 0){
 
 	        	throughIndex = metricsBaselineThrough.length - 1;
@@ -56,6 +54,7 @@ MediaPlayer.rules.DownloadSimpleRule = function () {
 	    		   self.metricsBaselinesModel.addThroughput3Seg(lastRequest.stream, lastRequest, now, through);
 	        	}
 	        }else{
+	        	
 	        	self.metricsBaselinesModel.addThroughput3Seg(lastRequest.stream, lastRequest, now, through);
 	        }
 	                     
@@ -150,7 +149,7 @@ MediaPlayer.rules.DownloadSimpleRule = function () {
                 }
                 
              	deferred = Q.defer();
-
+             	
                 //O início da sessão como um todo se acontece a partir do momento em que a primeira requisição de mídia é feita.
             	startRequest = firstRequest.trequest.getTime(); 
             	time = lastRequest.tfinish.getTime() - startRequest;
@@ -176,16 +175,45 @@ MediaPlayer.rules.DownloadSimpleRule = function () {
             	
             	self.debug.log("Baseline - Stream Type: " + lastRequest.stream);
             	//self.debug.log("Baseline - currentThrough: " + currentThrough +"bps");
-            	//self.debug.log("Baseline - range: " + lastRequest.range);
-            	self.debug.log("Baseline - lastRequest.finish: " + (lastRequest.tfinish.getTime() - startRequest) +"ms");
+            	self.debug.log("Baseline - lastRequest.range: " + lastRequest.range);
+            	self.debug.log("Baseline - currentBandwidth: " + currentBandwidth);
+            	self.debug.log("Baseline - representation1: " + representation1.id);
+            	
+        		self.debug.log("Baseline - firstRequest stream: " + metrics.HttpList[i].stream);
+        		if(metrics.HttpList[i].responsecode)
+            		self.debug.log("Baseline -  firstRequest responsecode: " + firstRequest.responsecode);
+        		self.debug.log("Baseline -  firstRequest response: " + (firstRequest.trequest.getTime() - startRequest));
+            	self.debug.log("Baseline -  firstRequest finish: " + (firstRequest.tfinish.getTime()- startRequest));
+        		self.debug.log("Baseline -  firstRequest url: " + firstRequest.url);
+        		self.debug.log("Baseline -  firstRequest range: " + firstRequest.range);
+            	
+            	for(var i = 0; i < metrics.HttpList.length; i++){
+            		self.debug.log("Baseline - HttpList Number: " + i);
+            		self.debug.log("Baseline - stream: " + metrics.HttpList[i].stream);
+            		if(metrics.HttpList[i].responsecode)
+                		self.debug.log("Baseline -  responsecode: " + metrics.HttpList[i].responsecode);
+            		self.debug.log("Baseline -  response: " + (metrics.HttpList[i].trequest.getTime()- startRequest));
+                	self.debug.log("Baseline -  finish: " + (metrics.HttpList[i].tfinish.getTime()- startRequest));
+            		self.debug.log("Baseline -  url: " + metrics.HttpList[i].url);
+            		self.debug.log("Baseline -  range: " + metrics.HttpList[i].range);
+            	}
+          		
+            	for(var j = 0; j < metricsBaseline.ThroughSeg.length; j++){
+            		self.debug.log("Baseline - ThroughSeg Number: " + j);
+            		self.debug.log("Baseline -  start: " + (metricsBaseline.ThroughSeg[j].startTime.getTime() - startRequest));
+            		self.debug.log("Baseline -  finish: " + (metricsBaseline.ThroughSeg[j].finishTime.getTime()- startRequest));
+            		self.debug.log("Baseline -  range: " + metricsBaseline.ThroughSeg[j].range);
+            	}
 
             	bufferMinTime1 = self.metricsBaselineExt.getBufferMinTime(time1, deltaBuffer, metrics, startRequest);
             	bufferMinTime2 = self.metricsBaselineExt.getBufferMinTime(time2, deltaBuffer, metrics, startRequest);
         		averageThrough = self.metricsBaselineExt.getAverageThrough(t1, time, metricsBaseline, startRequest);	
         		
-            	self.debug.log("Baseline - bufferMinTime1: " + bufferMinTime1);
-            	self.debug.log("Baseline - bufferMinTime2: " + bufferMinTime2);
-        		self.debug.log("Baseline - averageThrough: " + averageThrough);
+            	//self.debug.log("Baseline - bufferMinTime1: " + bufferMinTime1);
+            	//self.debug.log("Baseline - bufferMinTime2: " + bufferMinTime2);
+        		//self.debug.log("Baseline - averageThrough: " + averageThrough);
+        		
+
         		
         		if(current != max){
         			representation2 = self.manifestExt.getRepresentationFor1(current+1, data);

@@ -112,25 +112,25 @@ return {
         		self.debug.log("Baseline -  t: " + (metrics.BufferLevel[i].t.getTime() - startRequest));
     		self.debug.log("Baseline -  level: " + metrics.BufferLevel[i].level);
     		
-    	}
+    	}*/
   		
   		for(var i = 0; i < metrics.HttpList.length; i++){
     		self.debug.log("Baseline - HttpList Number: " + i);
     		self.debug.log("Baseline - stream: " + metrics.HttpList[i].stream);
     		if(metrics.HttpList[i].responsecode)
         		self.debug.log("Baseline -  responsecode: " + metrics.HttpList[i].responsecode);
-    		self.debug.log("Baseline -  start: " + metrics.HttpList[i].tresponse.getTime());
+    		self.debug.log("Baseline -  response: " + metrics.HttpList[i].tresponse.getTime());
         	self.debug.log("Baseline -  finish: " + metrics.HttpList[i].tfinish.getTime());
     		self.debug.log("Baseline -  type: " + metrics.HttpList[i].type);
     		
     	}
-    	
+  		/*
     	for(var j = 0; j < metricsBaseline.ThroughSeg.length; j++){
     		self.debug.log("Baseline - ThroughSeg Number: " + j);
     		self.debug.log("Baseline -  start: " + metricsBaseline.ThroughSeg[j].startTime.getTime());
     		self.debug.log("Baseline -  finish: " + metricsBaseline.ThroughSeg[j].finishTime.getTime());
-    	}*/
-    	
+    	}
+    	*/
     	if (time >= deltaTime){
     		t1 = time - deltaTime;
         }
@@ -150,16 +150,18 @@ return {
         	
         	self.debug.log("Baseline - Stream Type: " + lastRequest.stream);
         	self.debug.log("Baseline - Session Time: " + time+" ms");
-        	self.debug.log("Baseline - currentThrough: " + currentThrough +"bps");
+        	self.debug.log("Baseline - representation1: " + representation1);
+        	self.debug.log("Baseline - currentBandwidth: " + currentBandwidth);
+        	self.debug.log("Baseline - lastRequest.range: " + lastRequest.range);
         	self.debug.log("Baseline - lastRequest.finish: " + lastRequest.tfinish.getTime() +"ms");
 
         	bufferMinTime1 = self.metricsBaselineExt.getBufferMinTime(time1, deltaBuffer, metrics, startRequest);
         	bufferMinTime2 = self.metricsBaselineExt.getBufferMinTime(time2, deltaBuffer, metrics, startRequest);
     		averageThrough = self.metricsBaselineExt.getAverageThrough(t1, time, metricsBaseline, startRequest);	
     		
-        	self.debug.log("Baseline - bufferMinTime1: " + bufferMinTime1);
-        	self.debug.log("Baseline - bufferMinTime2: " + bufferMinTime2);
-    		self.debug.log("Baseline - averageThrough: " + averageThrough);
+        	//self.debug.log("Baseline - bufferMinTime1: " + bufferMinTime1);
+        	//self.debug.log("Baseline - bufferMinTime2: " + bufferMinTime2);
+    		//self.debug.log("Baseline - averageThrough: " + averageThrough);
     		
     		if(current != max){
     			representation2 = self.manifestExt.getRepresentationFor1(current+1, data);

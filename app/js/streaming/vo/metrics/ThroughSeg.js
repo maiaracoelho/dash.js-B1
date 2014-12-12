@@ -2,12 +2,14 @@
 MediaPlayer.vo.metrics.ThroughSeg = function () {
     "use strict";
 
+    this.index = NaN;
     this.currentTime = null;   		//Real-Time
     this.startTime = null;     		//Real-Time
     this.finishTime = null;    		//Real-Time
-    this.bandwidth = null;    		//Segment bandwidth  
     this.range = null;    		//Segment range  
-    this.representationId = null;   //Segment representation  
+    this.quality = NaN;
+    this.data = [];
+    this.bandwidth = null;    		//Segment bandwidth  
     this.throughSeg = null;    		//Segment Throughput  
 };
 

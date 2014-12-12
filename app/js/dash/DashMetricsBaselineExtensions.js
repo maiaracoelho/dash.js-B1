@@ -75,17 +75,13 @@ Dash.dependencies.DashMetricsBaselineExtensions = function () {
  		startTime, 
  		finishTime;
 
-    	this.debug.log("Baseline - T1: " + time1+" ms");
+    	//this.debug.log("Baseline - T1: " + time1+" ms");
 
     	while(begin < end){
     		startTime = throughList[begin].startTime.getTime() - startSessionTime; 
     		finishTime = throughList[begin].finishTime.getTime() - startSessionTime;
     		
-	    	this.debug.log("Baseline - Vetor Throughput Number: "+ startTime+ "ms");
-	    	this.debug.log("Baseline - range: "+ throughList[begin].range);
-	    	this.debug.log("Baseline - startTime: "+ startTime+ "ms");
-	    	this.debug.log("Baseline - finishTime: "+ finishTime+ "ms");
-	    	this.debug.log("Baseline - throughSeg: "+ throughList[begin].throughSeg);
+	    	//this.debug.log("Baseline - throughSeg: "+ throughList[begin].throughSeg);
 
     		if(finishTime >= time1){
     			if (startTime < time1) starTime = time1;
@@ -109,7 +105,7 @@ Dash.dependencies.DashMetricsBaselineExtensions = function () {
     		begin++;
     	}
     	
-    	this.debug.log("Baseline - Segments number: "+ countSegs);
+    	//this.debug.log("Baseline - Segments number: "+ countSegs);
 
     	return (somaThroughInters/somaInters);
         

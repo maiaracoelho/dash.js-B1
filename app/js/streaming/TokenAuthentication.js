@@ -32,7 +32,7 @@ MediaPlayer.utils.TokenAuthentication = function () {
                 request.getResponseHeader(tokenAuthentication.name) !== null) {
 
                 tokenAuthentication.token = request.getResponseHeader(tokenAuthentication.name);
-                this.debug.log(tokenAuthentication.name+" received: " + tokenAuthentication.token);
+                this.debug.log(tokenAuthentication.name+" received11: " + tokenAuthentication.token);
 
            }
         },
