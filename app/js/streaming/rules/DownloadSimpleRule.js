@@ -15,7 +15,7 @@ MediaPlayer.rules.DownloadSimpleRule = function () {
     "use strict";
     
         var runningFastStart=true,
-        	deltaTime=10000,'  
+        	deltaTime=10000, 
         	deltaBuffer=1000, 
         	time1 = 0, 
         	t1 = 0,
@@ -175,17 +175,18 @@ MediaPlayer.rules.DownloadSimpleRule = function () {
             	
             	self.debug.log("Baseline - Stream Type: " + lastRequest.stream);
             	//self.debug.log("Baseline - currentThrough: " + currentThrough +"bps");
-            	self.debug.log("Baseline - lastRequest.range: " + lastRequest.range);
-            	self.debug.log("Baseline - currentBandwidth: " + currentBandwidth);
-            	self.debug.log("Baseline - representation1: " + representation1.id);
+            	//self.debug.log("Baseline - lastRequest.range: " + lastRequest.range);
+            	//self.debug.log("Baseline - currentBandwidth: " + currentBandwidth);
+            	//self.debug.log("Baseline - current: " + current);
+            	//self.debug.log("Baseline - representation1: " + representation1.id);
             	
-        		self.debug.log("Baseline - firstRequest stream: " + metrics.HttpList[i].stream);
-        		if(metrics.HttpList[i].responsecode)
-            		self.debug.log("Baseline -  firstRequest responsecode: " + firstRequest.responsecode);
-        		self.debug.log("Baseline -  firstRequest response: " + (firstRequest.trequest.getTime() - startRequest));
-            	self.debug.log("Baseline -  firstRequest finish: " + (firstRequest.tfinish.getTime()- startRequest));
-        		self.debug.log("Baseline -  firstRequest url: " + firstRequest.url);
-        		self.debug.log("Baseline -  firstRequest range: " + firstRequest.range);
+        		//self.debug.log("Baseline - firstRequest stream: " + firstRequest.stream);
+        		//if(firstRequest.responsecode)
+            		//self.debug.log("Baseline -  firstRequest responsecode: " + firstRequest.responsecode);
+        		//self.debug.log("Baseline -  firstRequest response: " + (firstRequest.trequest.getTime() - startRequest));
+            	//self.debug.log("Baseline -  firstRequest finish: " + (firstRequest.tfinish.getTime()- startRequest));
+        		//self.debug.log("Baseline -  firstRequest url: " + firstRequest.url);
+        		//self.debug.log("Baseline -  firstRequest range: " + firstRequest.range);
             	
             	for(var i = 0; i < metrics.HttpList.length; i++){
             		self.debug.log("Baseline - HttpList Number: " + i);

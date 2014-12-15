@@ -1,5 +1,7 @@
-﻿/* Algoritmo da Dissertacao
+﻿/** Algoritmo com característica de adaptação conservativa, implementado a partir da Dissertação de Romero
+ * 	@class RomeroConservativeRule
  */
+
 MediaPlayer.rules.RomeroConservativeRule = function () {
     "use strict";
 
@@ -7,7 +9,12 @@ MediaPlayer.rules.RomeroConservativeRule = function () {
         debug: undefined,
         manifestExt: undefined,
         metricsExt: undefined,
-        
+        /**
+         * @param {current} current - Índice da representação corrente
+         * @param {metrics} metrics - Metricas armazenadas em MetricsList
+         * @param {data} data - Dados de audio ou vídeo
+         * @memberof RomeroConservativeRule#
+         */
         checkIndex: function (current, metrics, data) {
             var self = this,
             	lastRequest = self.metricsExt.getCurrentHttpRequest(metrics),

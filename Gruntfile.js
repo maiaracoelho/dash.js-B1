@@ -104,17 +104,27 @@ module.exports = function(grunt) {
               consolidate: true}
         }
       }
+    },
+    
+    jsdoc: {
+        dist: {
+            options: {
+                destination: 'jsdoc/JSDoc',
+                configure: "jsdoc/jsdoc_conf.json"
+            }
+        }
     }
   });
-
+  
   // Require needed grunt-modules
   grunt.loadNpmTasks('grunt-contrib-connect');
   grunt.loadNpmTasks('grunt-contrib-watch');
   grunt.loadNpmTasks('grunt-contrib-jasmine');
   grunt.loadNpmTasks('grunt-contrib-jshint');
   grunt.loadNpmTasks('grunt-contrib-uglify');
+  grunt.loadNpmTasks('grunt-jsdoc');
 
 
   // Define tasks
-  grunt.registerTask('default', ['jshint','connect:default_options','jasmine','uglify']);
+  grunt.registerTask('default', ['jshint','connect:default_options','jasmine','uglify', 'jsdoc']);
 };

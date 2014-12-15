@@ -1,7 +1,8 @@
-﻿/* Algoritmo TR5: Adaptation Algorithm for Adaptive Streaming over HTTP
- * 
- * Essa regra caracteriza um algoritmo agressivo
+﻿
+/** Algoritmo TR5: Adaptation Algorithm for Adaptive Streaming over HTTP
+ * 	@class MillerRule
  */
+
  
 MediaPlayer.rules.MillerRule = function () {
     "use strict";
@@ -17,7 +18,13 @@ return {
     manifestExt: undefined,
     metricsExt: undefined,
     metricsBaselineExt: undefined,
-    
+    /**
+     * @param {current} current - Índice da representação corrente
+     * @param {metrics} metrics - Metricas armazenadas em MetricsList
+     * @param {data} data - Dados de audio ou vídeo
+     * @param {metricsBaseline} data -  Metricas armazenadas em MetricsBaselineList
+     * @memberof MillerRule#
+     */
     checkIndex: function (current, metrics, data, metricsBaseline) {
 
         var self = this,

@@ -1,5 +1,7 @@
-﻿/* Algoritmo da Dissertacao
+﻿/** Algoritmo com característica de adaptação agressiva, implementado a partir da Dissertação de Romero
+ * 	@class RomeroAgressiveRule
  */
+
 MediaPlayer.rules.RomeroAgressiveRule = function () {
     "use strict";
 
@@ -7,6 +9,13 @@ MediaPlayer.rules.RomeroAgressiveRule = function () {
         debug: undefined,
         manifestExt: undefined,
         metricsExt: undefined,
+        
+        /**
+         * @param {current} current - Índice da representação corrente
+         * @param {metrics} metrics - Metricas armazenadas em MetricsList
+         * @param {data} data - Dados de audio ou vídeo
+         * @memberof RomeroConservativeRule#
+         */
         
         checkIndex: function (current, metrics, data) {
             var self = this,

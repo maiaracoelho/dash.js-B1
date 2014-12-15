@@ -17,6 +17,7 @@ MediaPlayer.dependencies.FragmentLoader = function () {
     var RETRY_ATTEMPTS = 3,
         RETRY_INTERVAL = 500,
         xhrs = [],
+        fragmentController = null,
 
         doLoad = function (request, remainingAttempts) {
             var req = new XMLHttpRequest(),
@@ -96,7 +97,7 @@ MediaPlayer.dependencies.FragmentLoader = function () {
                     latency = (request.firstByteDate.getTime() - request.requestStartDate.getTime());
                     download = (request.requestEndDate.getTime() - request.firstByteDate.getTime());
 
-                    self.debug.log("Baseline - loaded " + request.quality + request.streamType + ":" + request.type + ":" + request.startTime + " (" + req.status + ", " + latency + "ms, " + download + "ms)");
+                    self.debug.log("Baseline - loaded " +  request.streamType + ":" + request.type + ":" + request.startTime + " (" + req.status + ", " + latency + "ms, " + download + "ms)");
 
                     httpRequestMetrics.tresponse = request.firstByteDate;
                     httpRequestMetrics.tfinish = request.requestEndDate;
@@ -113,13 +114,27 @@ MediaPlayer.dependencies.FragmentLoader = function () {
                         data: bytes,
                         request: request
                     });
+
+                    fragmentController = self.system.getObject("fragmentController");
+                    fragmentController.process(bytes).then(
+            			function (dataB) {
+                            self.debug.log("request.quality = " + request.quality);
+
+                        	self.manifestExt.getRepresentationFor(request.quality, dataB).then(
+                        			function (representation) {
+                                        self.debug.log("representation = " + representation.id);
+
+                        			});
+
+                        	//currentBandwidth = self.manifestExt.getBandwidth1(representation);
+                            //self.debug.log("Quality = " + request.quality + " - Representation = " + representation + " - bandwidth = " + bandwidth);
+
+                		}
+                	);
+                        
+                  
                     
-                    self.fragmentController.process(response.data).then(
-            				function (data) {
-            					
-            			}
-            		);
-                    
+                   
                     
                 };
 
@@ -259,6 +274,7 @@ MediaPlayer.dependencies.FragmentLoader = function () {
         };
         
     return {
+        system: undefined,
         metricsModel: undefined,
         manifestModel: undefined,
         errHandler: undefined,
