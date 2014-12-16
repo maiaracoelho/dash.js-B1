@@ -70,8 +70,9 @@ MediaPlayer.rules.DownloadSimpleRule = function () {
             checkIndex: function (current, metrics, data, metricsBaseline) {
 
                 var self = this,
+                httpRequestList = self.metricsExt.getHttpRequests(metrics),
                 lastRequest = self.metricsExt.getCurrentHttpRequest(metrics),
-                firstRequest = self.metricsExt.getFirstHttpRequest(metrics), 				//First Request n(0)
+                firstRequest = self.metricsExt.getFirstHttpRequest(metrics), 											//First Request n(0)
                 currentBufferLevel  = self.metricsExt.getCurrentBufferLevel(metrics),		//b(t)
                 bDelay=0,																	//Onde sera aplicado? (ms)
                 bMin=8000,
@@ -103,7 +104,7 @@ MediaPlayer.rules.DownloadSimpleRule = function () {
                 currentBandwidthMs = 0;
                 
             	self.debug.log("Baseline - Regra TR5 MillerRule...");
-             	self.debug.log("Baseline - Tamanho HttpList: " + metrics.HttpList.length);
+             	self.debug.log("Baseline - Tamanho HttpList: " + httpRequestList.length);
              	self.debug.log("Baseline - Tamanho BufferLevel: " + metrics.BufferLevel.length);
              	self.debug.log("Baseline - Tamanho Through: " + metricsBaseline.ThroughSeg.length);
 
@@ -127,27 +128,11 @@ MediaPlayer.rules.DownloadSimpleRule = function () {
                     return Q.when(new MediaPlayer.rules.SwitchRequest());
                 }
 
-                if (lastRequest.mediaduration == null ||
-                    lastRequest.mediaduration == undefined ||
-                    lastRequest.mediaduration <= 0 ||
-                    isNaN(lastRequest.mediaduration)) {
-                    //self.debug.log("Don't know the duration of the last media fragment, bailing.");
-                    return Q.when(new MediaPlayer.rules.SwitchRequest());
-                }
-                
                 if (firstRequest == null) {
                     //self.debug.log("No requests made for this stream yet, bailing.");
                     return Q.when(new MediaPlayer.rules.SwitchRequest());
                 }
 
-                if (firstRequest.mediaduration == null ||
-                		firstRequest.mediaduration == undefined ||
-                		firstRequest.mediaduration <= 0 ||
-                    isNaN(firstRequest.mediaduration)) {
-                    //self.debug.log("Don't know the duration of the first media fragment, bailing.");
-                    return Q.when(new MediaPlayer.rules.SwitchRequest());
-                }
-                
              	deferred = Q.defer();
              	
                 //O início da sessão como um todo se acontece a partir do momento em que a primeira requisição de mídia é feita.
@@ -171,41 +156,47 @@ MediaPlayer.rules.DownloadSimpleRule = function () {
             	
             	currentThrough = (lastRequest.mediaduration/downloadTime) * currentBandwidth; 	
             	
-            	preInsertThroughputs.call(self, lastRequest, currentBandwidthMs, (currentThrough/1000), representation1.id);
+            	//preInsertThroughputs.call(self, lastRequest, currentBandwidthMs, (currentThrough/1000), representation1.id);
             	
-            	self.debug.log("Baseline - Stream Type: " + lastRequest.stream);
-            	//self.debug.log("Baseline - currentThrough: " + currentThrough +"bps");
-            	//self.debug.log("Baseline - lastRequest.range: " + lastRequest.range);
-            	//self.debug.log("Baseline - currentBandwidth: " + currentBandwidth);
-            	//self.debug.log("Baseline - current: " + current);
-            	//self.debug.log("Baseline - representation1: " + representation1.id);
-            	
-        		//self.debug.log("Baseline - firstRequest stream: " + firstRequest.stream);
-        		//if(firstRequest.responsecode)
-            		//self.debug.log("Baseline -  firstRequest responsecode: " + firstRequest.responsecode);
-        		//self.debug.log("Baseline -  firstRequest response: " + (firstRequest.trequest.getTime() - startRequest));
-            	//self.debug.log("Baseline -  firstRequest finish: " + (firstRequest.tfinish.getTime()- startRequest));
-        		//self.debug.log("Baseline -  firstRequest url: " + firstRequest.url);
-        		//self.debug.log("Baseline -  firstRequest range: " + firstRequest.range);
-            	
-            	for(var i = 0; i < metrics.HttpList.length; i++){
-            		self.debug.log("Baseline - HttpList Number: " + i);
-            		self.debug.log("Baseline - stream: " + metrics.HttpList[i].stream);
-            		if(metrics.HttpList[i].responsecode)
-                		self.debug.log("Baseline -  responsecode: " + metrics.HttpList[i].responsecode);
-            		self.debug.log("Baseline -  response: " + (metrics.HttpList[i].trequest.getTime()- startRequest));
-                	self.debug.log("Baseline -  finish: " + (metrics.HttpList[i].tfinish.getTime()- startRequest));
-            		self.debug.log("Baseline -  url: " + metrics.HttpList[i].url);
-            		self.debug.log("Baseline -  range: " + metrics.HttpList[i].range);
+            	self.debug.log("Baseline - HttpList Number: " + i);
+        		self.debug.log("Baseline - lastRequest stream: " +lastRequest.stream);
+        		if(httpRequestList[i].responsecode)
+            		self.debug.log("Baseline -  lastRequest responsecode: " + lastRequest.responsecode);
+        		self.debug.log("Baseline -   lastRequest request: " + (lastRequest.trequest.getTime() - startRequest));
+        		self.debug.log("Baseline -  lastRequest response: " + (lastRequest.tresponse.getTime()- startRequest));
+            	self.debug.log("Baseline -  lastRequest finish: " + (lastRequest.tfinish.getTime()- startRequest));
+        		self.debug.log("Baseline -  lastRequest url: " + lastRequest.url);
+        		self.debug.log("Baseline -  lastRequest range: " + lastRequest.range);
+        		self.debug.log("Baseline -  lastRequest type: " + lastRequest.type);
+        		self.debug.log("Baseline -  lastRequest duration: " + lastRequest.mediaduration);
+        		
+            	var count = 0;
+            	for(var i = 0; i < httpRequestList.length; i++){
+            		if(httpRequestList[i].type != "Initialization Segment"){
+            			count+=1;
+            			self.debug.log("Baseline - HttpList Number: " + i);
+                		self.debug.log("Baseline - stream: " +httpRequestList[i].stream);
+                		if(httpRequestList[i].responsecode)
+                    		self.debug.log("Baseline -  responsecode: " + httpRequestList[i].responsecode);
+                		self.debug.log("Baseline -   request: " + (httpRequestList[i].trequest.getTime() - startRequest));
+                		self.debug.log("Baseline -  response: " + (httpRequestList[i].tresponse.getTime()- startRequest));
+                    	self.debug.log("Baseline -  finish: " + (httpRequestList[i].tfinish.getTime()- startRequest));
+                		self.debug.log("Baseline -  url: " + httpRequestList[i].url);
+                		self.debug.log("Baseline -  range: " + httpRequestList[i].range);
+                		self.debug.log("Baseline -  type: " + httpRequestList[i].type);
+                		self.debug.log("Baseline -  duration: " + httpRequestList[i].mediaduration);
+            		}
             	}
           		
             	for(var j = 0; j < metricsBaseline.ThroughSeg.length; j++){
             		self.debug.log("Baseline - ThroughSeg Number: " + j);
             		self.debug.log("Baseline -  start: " + (metricsBaseline.ThroughSeg[j].startTime.getTime() - startRequest));
+            		self.debug.log("Baseline -  response: " + (metricsBaseline.ThroughSeg[j].responseTime.getTime() - startRequest));
             		self.debug.log("Baseline -  finish: " + (metricsBaseline.ThroughSeg[j].finishTime.getTime()- startRequest));
             		self.debug.log("Baseline -  range: " + metricsBaseline.ThroughSeg[j].range);
+            		self.debug.log("Baseline -  duration: " + metricsBaseline.ThroughSeg[j].duration);
             	}
-
+				
             	bufferMinTime1 = self.metricsBaselineExt.getBufferMinTime(time1, deltaBuffer, metrics, startRequest);
             	bufferMinTime2 = self.metricsBaselineExt.getBufferMinTime(time2, deltaBuffer, metrics, startRequest);
         		averageThrough = self.metricsBaselineExt.getAverageThrough(t1, time, metricsBaseline, startRequest);	

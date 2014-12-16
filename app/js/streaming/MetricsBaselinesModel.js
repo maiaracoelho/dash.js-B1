@@ -70,37 +70,60 @@ MediaPlayer.models.MetricsBaselinesModel = function () {
             return metricsBaseline;
         },
 
-        addThroughput3Seg: function (streamType, req, now, through) {
+        addThroughput3Seg: function (req, now) {
         	var vo = new MediaPlayer.vo.metrics.Through3Seg();
                	
         	vo.currentTime = now;
-            vo.startTime = req.tresponse;
-            vo.finishTime = req.tfinish;
-            vo.throughSeg = through;
+            vo.startTime = req.requestStartDate;
+            vo.responseTime = req.firstByteDate;
+            vo.finishTime = req.requestEndDate;
+            vo.range = req.range;
+            vo.duration = req.duration;
+            vo.quality = req.quality;
 
-            this.getMetricsBaselineFor(streamType).Through3Seg.push(vo);
-            this.metricBaselineAdded(streamType, "Through3Seg", vo);
+            this.getMetricsBaselineFor(req.streamType).Through3Seg.push(vo);
+            this.metricBaselineAdded(req.streamType, "Through3Seg", vo);
 
             return vo;
         }, 
         
-        addThroughputSeg: function (streamType, req, now, bandwidth, range, representationId, throughSeg) {
+        updateThroughput3Seg: function (streamType, band, through3SegList, through) {
+               	
+            vo.bandwidth = band;
+            vo.throughSeg = through;
 
-        	var vo = new MediaPlayer.vo.metrics.ThroughSeg();
-
-            vo.currentTime = now;
-            vo.startTime = req.tresponse;
-            vo.finishTime = req.tfinish;
-            vo.bandwidth = bandwidth;    		
-            vo.range = range;    		
-            vo.representationId = representationId;   
-            vo.throughSeg = throughSeg;   
-
-            this.getMetricsBaselineFor(streamType).ThroughSeg.push(vo);
-            this.metricBaselineAdded(streamType, "ThroughSeg", vo);
+            this.metricBaselineUpdated(streamType, "Through3Seg", vo);
 
             return vo;
         }, 
+        
+        
+        addThroughputSeg: function (req, now) {
+        	var vo = new MediaPlayer.vo.metrics.ThroughSeg();
+
+        	vo.currentTime = now;
+        	 vo.startTime = req.requestStartDate;
+             vo.responseTime = req.firstByteDate;
+             vo.finishTime = req.requestEndDate;
+            vo.range = req.range;
+            vo.duration = req.duration;
+            vo.quality = req.quality; 
+
+            this.getMetricsBaselineFor(req.streamType).ThroughSeg.push(vo);
+            this.metricBaselineAdded(req.streamType, "ThroughSeg", vo);
+
+            return vo;
+        }, 
+        
+        updateThroughputSeg: function (streamType, band, throughSegList, through) {
+           	
+            vo.bandwidth = band;
+            vo.throughSeg = through;
+
+            this.metricBaselineUpdated(streamType, "ThroughSeg", vo);
+
+            return vo;
+        }
       
     };
 };

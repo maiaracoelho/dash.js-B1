@@ -56,7 +56,6 @@ MediaPlayer.dependencies.FragmentController = function () {
 
         process: function (bytes) {
             var result = null;
-
             if (bytes !== null && bytes !== undefined && bytes.byteLength > 0) {
                 result = new Uint8Array(bytes);
             }

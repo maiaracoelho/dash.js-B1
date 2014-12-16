@@ -17,7 +17,7 @@ MediaPlayer.dependencies.FragmentLoader = function () {
     var RETRY_ATTEMPTS = 3,
         RETRY_INTERVAL = 500,
         xhrs = [],
-        fragmentController = null,
+        bufferCont = null,
 
         doLoad = function (request, remainingAttempts) {
             var req = new XMLHttpRequest(),
@@ -114,27 +114,8 @@ MediaPlayer.dependencies.FragmentLoader = function () {
                         data: bytes,
                         request: request
                     });
-
-                    fragmentController = self.system.getObject("fragmentController");
-                    fragmentController.process(bytes).then(
-            			function (dataB) {
-                            self.debug.log("request.quality = " + request.quality);
-
-                        	self.manifestExt.getRepresentationFor(request.quality, dataB).then(
-                        			function (representation) {
-                                        self.debug.log("representation = " + representation.id);
-
-                        			});
-
-                        	//currentBandwidth = self.manifestExt.getBandwidth1(representation);
-                            //self.debug.log("Quality = " + request.quality + " - Representation = " + representation + " - bandwidth = " + bandwidth);
-
-                		}
-                	);
-                        
-                  
                     
-                   
+                    preInsertThroughSeg.call(self, request);
                     
                 };
 
@@ -194,58 +175,22 @@ MediaPlayer.dependencies.FragmentLoader = function () {
                 req.send();
         },
         
-        insertThroughput3Seg = function (now, repBitrate, req, downloadTime)  {
-        	var self = this, metricsBaselineThrough, through, segDuration;
+        preInsertThroughSeg = function (request) {
+        	var now = new Date(), metricsBaselineThrough, self = this;
+            
+   			if (request != null) {
+   				if (request.type != "Initialization Segment") {
+   					
+                    self.debug.log("Segment Duration: " + request.duration + ":" + request.type);
 
-            segDuration = req.mediaduration;
-           	through = (repBitrate * segDuration)/downloadTime; 
-           	           	
-           	metricsBaselineThrough = self.metricsBaselinesModel.getMetricsBaselineFor(type).Through3Seg;
-			//self.debug.log("Baseline - Tamanho do Vetor Through3Seg: " + metricsBaselineThrough.length +" Type: " +type);
-      
-           	if(metricsBaselineThrough.length >= 3)
-           		metricsBaselineThrough.shift();
-            
-           	self.metricsBaselinesModel.addThroughput3Seg(type, req, now, through);
-        }, 
-        
-        insertThroughSeg = function (now, repBitrate, req, downloadTime) {
-        	var through, segDuration, self = this, metricsBaselineThrough;
-        	
-        	metricsBaselineThrough = self.metricsBaselinesModel.getMetricsBaselineFor(type).ThroughSeg;
-			//self.debug.log("Baseline - Tamanho do Vetor ThroughSeg: " + metricsBaselineThrough.length +" Type: " +type);
-        	
-        	segDuration = req.mediaduration; 
-        	through = (repBitrate * segDuration)/downloadTime; 
-       
-        	self.metricsBaselinesModel.addThroughputSeg(type, req, now, through);
-                       
-        }, 
-        
-        preInsertThroughSeg = function (metrics) {
-        	var self = this, currentRep, qual, repBitrate, req, downloadTime, now = new Date();
+   		        	self.metricsBaselinesModel.addThroughputSeg(request, now);
+   		        	
+   		        	metricsBaselineThrough = self.metricsBaselinesModel.getMetricsBaselineFor(request.streamType).Through3Seg;
+   		        	
+   		        	if(metricsBaselineThrough.length >= 3)
+   		           		metricsBaselineThrough.shift();
+   		           	self.metricsBaselinesModel.addThroughput3Seg(request, now);
 
-        	req = self.metricsExt.getCurrentHttpRequest(metrics);
-            
-   			if (req != null) {
-   				if (req.mediaduration != null ||
-   						req.mediaduration != undefined ||
-   						req.mediaduration > 0 ) {
-    		
-   					downloadTime = req.tfinish.getTime() - req.tresponse.getTime();
-   					self.debug.log("downloadTime: " + downloadTime + " ms");
-            
-   					qual = self.abrController.getQualityFor(type);
-   					self.debug.log("qual: " + qual);
-            
-   					currentRep = self.manifestExt.getRepresentationFor1(qual, data);
-   					self.debug.log("currentRep: " + currentRep.id);
-        	
-   					repBitrate = self.manifestExt.getBandwidth1(currentRep);
-   					self.debug.log("repBitrate: " + repBitrate);
-
-   					//insertThroughput3Seg.call(self, now, repBitrate, req, downloadTime);
-   					//insertThroughSeg.call(self, now, repBitrate, req, downloadTime);
    				}
    			}
         },
@@ -281,6 +226,7 @@ MediaPlayer.dependencies.FragmentLoader = function () {
         debug: undefined,
         tokenAuthentication:undefined,
         manifestExt: undefined,
+        metricsBaselinesModel: undefined,
 
         load: function (req) {
 

@@ -1499,7 +1499,9 @@ MediaPlayer.dependencies.BufferController = function () {
 
         start: doStart,
         seek: doSeek,
-        stop: doStop
+        stop: doStop,
+        getRepresentationForQuality:getRepresentationForQuality
+        
     };
 };
 

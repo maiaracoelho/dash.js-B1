@@ -218,7 +218,7 @@ Dash.dependencies.DashMetricsExtensions = function () {
             httpListLastIndex = httpListLength - 1;
 
             while (httpListLastIndex > 0) {
-                if (httpList[httpListLastIndex].responsecode) {
+                if (httpList[httpListLastIndex].responsecode &&  httpList[httpListLastIndex].mediaduration) {
                     currentHttpList = httpList[httpListLastIndex];
                     break;
                 }
@@ -227,7 +227,12 @@ Dash.dependencies.DashMetricsExtensions = function () {
             return currentHttpList;
         },
         
-        /**Baseline**/
+        /**
+         * @author Maiara Coelho
+         * @param {metrics} Metrics
+         * @returns FirstHttp - The first segment. It should has the smaller trequest value and valid mediaduration too
+         * @memberof MetricsExt
+         * **/
         getFirstHttpRequest = function (metrics) { 
         	
         	if (metrics === null) {
@@ -237,8 +242,8 @@ Dash.dependencies.DashMetricsExtensions = function () {
             var httpList = metrics.HttpList,
                 httpListLength,
                 httpListFirstIndex,
-                FirstHttpList = null,
-                menor =0;
+                FirstHttp = null,
+                min;
 
             if (httpList === null || httpList.length <= 0) {
 
@@ -248,20 +253,52 @@ Dash.dependencies.DashMetricsExtensions = function () {
             httpListLength = httpList.length - 1;
             httpListFirstIndex = 0;
             
-            menor = -1;
+            min = -1;
             
             while (httpListFirstIndex < httpListLength) {
                 if (httpList[httpListFirstIndex].responsecode && httpList[httpListFirstIndex].mediaduration) {
-                	                	
-                	if (menor == -1 || httpList[httpListFirstIndex].trequest < httpList[menor].trequest ){
-                		FirstHttpList = httpList[httpListFirstIndex];
-                		menor = httpListFirstIndex;
-                		break;
+                	if (min == -1 || httpList[httpListFirstIndex].trequest < httpList[min].trequest){
+                		FirstHttp = httpList[httpListFirstIndex];
+                		min = httpListFirstIndex;
                 	}
                 }
                 httpListFirstIndex+=1;
             }
-            return FirstHttpList;
+            return FirstHttp;
+        },
+        
+        /**
+         * @author Maiara Coelho
+         * @param {metrics} Metrics
+         * @returns HttpListTemp - The segment List. It should has the valid mediaduration
+         * @memberof MetricsExt
+         * **/
+        getHttpRequestList = function (metrics) { 
+        	
+        	if (metrics === null) {
+                return [];
+            }
+
+            var httpList = metrics.HttpList,
+                httpListLength,
+                httpListIndex,
+                HttpListTemp = [],
+                min;
+
+            if (httpList === null || httpList.length <= 0) {
+                return [];
+            }
+
+            httpListLength = httpList.length - 1;
+            httpListIndex = 0;
+                        
+            while (httpListIndex < httpListLength) {
+                if (httpList[httpListIndex].responsecode && httpList[httpListIndex].mediaduration) {
+                	HttpListTemp = httpList[httpListIndex];
+                }
+                httpListIndex+=1;
+            }
+            return !!HttpListTemp ? HttpListTemp : [];
         },
         
         getHttpRequests = function (metrics) {
@@ -280,7 +317,6 @@ Dash.dependencies.DashMetricsExtensions = function () {
             return !!metrics.BufferLevel ? metrics.BufferLevel : [];
         },
         
-        /****/
         getCurrentDroppedFrames = function (metrics) {
             if (metrics === null) { return null; }
 
