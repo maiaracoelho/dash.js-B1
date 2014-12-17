@@ -200,7 +200,7 @@ Dash.dependencies.DashMetricsExtensions = function () {
             return currentBufferLevel;
         },
 
-        getCurrentHttpRequest = function (metrics) { //informacoes da ultima transação http respondida, ou seja de n(t)
+        getCurrentHttpRequest = function (metrics) { //informacoes da ultima transação http requisitada, ou seja de n(t)
             if (metrics === null) {
                 return null;
             }
@@ -221,6 +221,43 @@ Dash.dependencies.DashMetricsExtensions = function () {
                 if (httpList[httpListLastIndex].responsecode &&  httpList[httpListLastIndex].mediaduration) {
                     currentHttpList = httpList[httpListLastIndex];
                     break;
+                }
+                httpListLastIndex -= 1;
+            }
+            return currentHttpList;
+        },
+        
+        /**
+         * @author Maiara Coelho
+         * @param {metrics} Metrics
+         * @returns lastHttpRequest - The last segment. It should has the bigger trequest value and a valid mediaduration too
+         * @memberof MetricsExt
+         * **/
+        getLastHttpRequest = function (metrics) { //informacoes da ultima transação http respondida, ou seja de n(t)
+
+            if (metrics === null) {
+                return null;
+            }
+
+            var httpList = metrics.HttpList,
+                httpListLength,
+                httpListLastIndex,
+                currentHttpList = null,
+                max = -1;
+            
+            if (httpList === null || httpList.length <= 0) {
+                return null;
+            }
+
+            httpListLength = httpList.length;
+            httpListLastIndex = httpListLength - 1;
+
+            while (httpListLastIndex > 0) {
+                if (httpList[httpListLastIndex].responsecode &&  httpList[httpListLastIndex].mediaduration) {
+                	if (max == -1 || httpList[httpListLastIndex].tfinish > httpList[max].tfinish){
+                		currentHttpList = httpList[httpListLastIndex];
+                		max = httpListLastIndex;
+                	}
                 }
                 httpListLastIndex -= 1;
             }
@@ -282,7 +319,7 @@ Dash.dependencies.DashMetricsExtensions = function () {
             var httpList = metrics.HttpList,
                 httpListLength,
                 httpListIndex,
-                HttpListTemp = [],
+                HttpListTemp = null,
                 min;
 
             if (httpList === null || httpList.length <= 0) {
@@ -390,7 +427,9 @@ Dash.dependencies.DashMetricsExtensions = function () {
         getFirstHttpRequest : getFirstHttpRequest,
         getCurrentDroppedFrames : getCurrentDroppedFrames,
         getCurrentDVRInfo : getCurrentDVRInfo,
-        getCurrentManifestUpdate: getCurrentManifestUpdate
+        getCurrentManifestUpdate: getCurrentManifestUpdate,
+        getLastHttpRequest: getLastHttpRequest,
+        getHttpRequestList: getHttpRequestList
     };
 };
 

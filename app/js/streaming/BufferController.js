@@ -1060,7 +1060,7 @@ MediaPlayer.dependencies.BufferController = function () {
                     }
                 );
                
-                self.abrController.getPlaybackQuality(type, data).then(
+                self.abrController.getPlaybackQuality(type, data, availableRepresentations).then(
                     function (result) {
                         //self.debug.log("Resultado");
 
@@ -1381,7 +1381,7 @@ MediaPlayer.dependencies.BufferController = function () {
         getCurrentRepresentation: function() {
             return currentRepresentation;
         },
-
+        
         getBuffer: function () {
             return buffer;
         },

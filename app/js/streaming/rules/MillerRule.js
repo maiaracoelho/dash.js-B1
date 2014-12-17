@@ -10,45 +10,30 @@ MediaPlayer.rules.MillerRule = function () {
         	time1 = 0, 
         	t1 = 0,
         	      
-        preInsertThroughputs = function (lastRequest, currentBandwidth, through, representationId) {
-        	var self = this, now = new Date(), metricsBaselineThrough3Seg, metricsBaselineThrough, throughIndex;
+        	insertThroughputs = function (throughList, availableRepresentations) {
+        		var self = this, representation, bandwidth, quality;
+        	
 
-			//self.debug.log("currentBandwidth: " + currentBandwidth + "b/ms");
-			//self.debug.log("through: " + through+ "b/ms");
-			//self.debug.log("lastRequest.range: " + lastRequest.range);
+        		//self.debug.log("currentBandwidth: " + currentBandwidth + "b/ms");
+        		//self.debug.log("through: " + through+ "b/ms");
+        		self.debug.log("availableRepresentations.length: " + availableRepresentations.length);
+        	
+        		for(var i = 0; i < throughList.length; i++){
+        			quality = throughList[i].quality;
+        			
+        			if(throughList[i].stream){
+        				
+        			}else if (throughList[i].stream){//armazenar tipo no ThroughputSeg
+        				
+        			}
+        			representation = availableRepresentations[quality];
+        		
+        			self.debug.log("Representation: " + representation.id);
 
-	        metricsBaselineThrough3Seg = self.metricsBaselinesModel.getMetricsBaselineFor(lastRequest.stream).Through3Seg;
-
-	        metricsBaselineThrough = self.metricsBaselinesModel.getMetricsBaselineFor(lastRequest.stream).ThroughSeg;
-	        
-	        if(metricsBaselineThrough.length > 0){
-
-	        	throughIndex = metricsBaselineThrough.length - 1;
-    			self.debug.log("lastRequest.range: " + lastRequest.range + " - metricsBaselineThrough[throughIndex].range: " + metricsBaselineThrough[throughIndex].range);
-
-	        	if(lastRequest.range != metricsBaselineThrough[throughIndex].range){
-	    		    self.metricsBaselinesModel.addThroughputSeg(lastRequest.stream, lastRequest, now, currentBandwidth, lastRequest.range, representationId, through);
-	        	}
-	        }else{
-		        self.metricsBaselinesModel.addThroughputSeg(lastRequest.stream, lastRequest, now, currentBandwidth, lastRequest.range, representationId, through); 
-	        }
-	        
-	        if(metricsBaselineThrough3Seg.length > 0 ){
-
-	        	throughIndex = metricsBaselineThrough3Seg.length - 1;
-
-	        	if(lastRequest.range != metricsBaselineThrough3Seg[throughIndex].range){
-
-	    			if(metricsBaselineThrough3Seg.length >= 3)
-	    		    	metricsBaselineThrough3Seg.shift();    
-	    		   self.metricsBaselinesModel.addThroughput3Seg(lastRequest.stream, lastRequest, now, through);
-	        	}
-	        }else{
-	        	
-	        	self.metricsBaselinesModel.addThroughput3Seg(lastRequest.stream, lastRequest, now, through);
-	        }
+        		}
+        		//self.metricsBaselinesModel.addThroughputSeg(lastRequest.stream, lastRequest, now, through);
 	                     
-        };
+        	};
         
         return {
             debug: undefined,
@@ -65,11 +50,11 @@ MediaPlayer.rules.MillerRule = function () {
              * @memberof MillerRule#
              */
             
-            checkIndex: function (current, metrics, data, metricsBaseline) {
+            checkIndex: function (current, metrics, data, metricsBaseline, availableRepresentations) {
 
                 var self = this,
                 httpRequestList = self.metricsExt.getHttpRequests(metrics),
-                lastRequest = self.metricsExt.getCurrentHttpRequest(metrics),
+                lastRequest = self.metricsExt.getLastHttpRequest(metrics),
                 firstRequest = self.metricsExt.getFirstHttpRequest(metrics), 											//First Request n(0)
                 currentBufferLevel  = self.metricsExt.getCurrentBufferLevel(metrics),		//b(t)
                 bDelay=0,																	//Onde sera aplicado? (ms)
@@ -154,11 +139,10 @@ MediaPlayer.rules.MillerRule = function () {
             	
             	currentThrough = (lastRequest.mediaduration/downloadTime) * currentBandwidth; 	
             	
-            	//preInsertThroughputs.call(self, lastRequest, currentBandwidthMs, (currentThrough/1000), representation1.id);
+            	insertThroughputs.call(self, metricsBaseline.ThroughSeg, availableRepresentations);
             	
-            	self.debug.log("Baseline - HttpList Number: " + i);
-        		self.debug.log("Baseline - lastRequest stream: " +lastRequest.stream);
-        		if(httpRequestList[i].responsecode)
+        		/*self.debug.log("Baseline - lastRequest stream: " +lastRequest.stream);
+        		if(lastRequest.responsecode)
             		self.debug.log("Baseline -  lastRequest responsecode: " + lastRequest.responsecode);
         		self.debug.log("Baseline -   lastRequest request: " + (lastRequest.trequest.getTime() - startRequest));
         		self.debug.log("Baseline -  lastRequest response: " + (lastRequest.tresponse.getTime()- startRequest));
@@ -168,10 +152,7 @@ MediaPlayer.rules.MillerRule = function () {
         		self.debug.log("Baseline -  lastRequest type: " + lastRequest.type);
         		self.debug.log("Baseline -  lastRequest duration: " + lastRequest.mediaduration);
         		
-            	var count = 0;
             	for(var i = 0; i < httpRequestList.length; i++){
-            		if(httpRequestList[i].type != "Initialization Segment"){
-            			count+=1;
             			self.debug.log("Baseline - HttpList Number: " + i);
                 		self.debug.log("Baseline - stream: " +httpRequestList[i].stream);
                 		if(httpRequestList[i].responsecode)
@@ -183,7 +164,6 @@ MediaPlayer.rules.MillerRule = function () {
                 		self.debug.log("Baseline -  range: " + httpRequestList[i].range);
                 		self.debug.log("Baseline -  type: " + httpRequestList[i].type);
                 		self.debug.log("Baseline -  duration: " + httpRequestList[i].mediaduration);
-            		}
             	}
           		
             	for(var j = 0; j < metricsBaseline.ThroughSeg.length; j++){
@@ -193,7 +173,7 @@ MediaPlayer.rules.MillerRule = function () {
             		self.debug.log("Baseline -  finish: " + (metricsBaseline.ThroughSeg[j].finishTime.getTime()- startRequest));
             		self.debug.log("Baseline -  range: " + metricsBaseline.ThroughSeg[j].range);
             		self.debug.log("Baseline -  duration: " + metricsBaseline.ThroughSeg[j].duration);
-            	}
+            	}*/
 				
             	bufferMinTime1 = self.metricsBaselineExt.getBufferMinTime(time1, deltaBuffer, metrics, startRequest);
             	bufferMinTime2 = self.metricsBaselineExt.getBufferMinTime(time2, deltaBuffer, metrics, startRequest);

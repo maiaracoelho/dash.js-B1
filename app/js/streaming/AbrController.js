@@ -119,7 +119,7 @@ MediaPlayer.dependencies.AbrController = function () {
             return deferred.promise;
         },
         
-        getPlaybackQuality: function (type, data) {
+        getPlaybackQuality: function (type, data, availableRepresentations) {
             var self = this,
                 deferred = Q.defer(),
                 newQuality = MediaPlayer.rules.SwitchRequest.prototype.NO_CHANGE,
@@ -150,7 +150,7 @@ MediaPlayer.dependencies.AbrController = function () {
                                 for (i = 0, len = rules.length; i < len; i += 1) {
                                     self.debug.log("Regras: "+len);
 
-                                    funcs.push(rules[i].checkIndex(quality, metrics, data, metricsBaseline));
+                                    funcs.push(rules[i].checkIndex(quality, metrics, data, metricsBaseline, availableRepresentations));
 
                                 }
                                 Q.all(funcs).then(

@@ -18,8 +18,8 @@ MediaPlayer.rules.BaseRulesCollection = function () {
 
     return {
         //downloadRatioRule: undefined,
-        downloadSimpleRule: undefined,
-        //millerRule: undefined,
+        //downloadSimpleRule: undefined,
+        millerRule: undefined,
         //romeroAgressiveRule: undefined,
         //romeroConservativeRule: undefined,
         //romeroMeanRule: undefined,
@@ -36,8 +36,8 @@ MediaPlayer.rules.BaseRulesCollection = function () {
             self.getRules().then(
                 function (r) {
                     //r.push(self.downloadRatioRule);
-                    r.push(self.downloadSimpleRule);
-                    //r.push(self.millerRule);
+                    //r.push(self.downloadSimpleRule);
+                    r.push(self.millerRule);
                     //r.push(self.romeroAgressiveRule);
                     //r.push(self.romeroConservativeRule);
                     //r.push(self.romeroMeanRule);
