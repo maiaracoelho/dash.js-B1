@@ -1125,21 +1125,7 @@ MediaPlayer.dependencies.BufferController = function () {
         };
         
         /******inserção das métricas que serão utilizadas pelas regras do Baseline****implementado por Maiara Coelho***
-        insertThroughput3Seg = function (now, repBitrate, req, downloadTime)  {
-        	var self = this, metricsBaselineThrough, through, segDuration;
-
-            segDuration = req.mediaduration;
-           	through = (repBitrate * segDuration)/downloadTime; 
-           	           	
-           	metricsBaselineThrough = self.metricsBaselinesModel.getMetricsBaselineFor(type).Through3Seg;
-			//self.debug.log("Baseline - Tamanho do Vetor Through3Seg: " + metricsBaselineThrough.length +" Type: " +type);
-      
-           	if(metricsBaselineThrough.length >= 3)
-           		metricsBaselineThrough.shift();
-            
-           	self.metricsBaselinesModel.addThroughput3Seg(type, req, now, through);
-        }, 
-        
+               
         insertThroughSeg = function (now, repBitrate, req, downloadTime) {
         	var through, segDuration, self = this, metricsBaselineThrough;
         	

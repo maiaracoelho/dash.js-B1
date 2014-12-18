@@ -69,43 +69,16 @@ MediaPlayer.models.MetricsBaselinesModel = function () {
 
             return metricsBaseline;
         },
-
-        addThroughput3Seg: function (req, now) {
-        	var vo = new MediaPlayer.vo.metrics.Through3Seg();
-               	
-        	vo.currentTime = now;
-            vo.startTime = req.requestStartDate;
-            vo.responseTime = req.firstByteDate;
-            vo.finishTime = req.requestEndDate;
-            vo.range = req.range;
-            vo.duration = req.duration;
-            vo.quality = req.quality;
-
-            this.getMetricsBaselineFor(req.streamType).Through3Seg.push(vo);
-            this.metricBaselineAdded(req.streamType, "Through3Seg", vo);
-
-            return vo;
-        }, 
-        
-        updateThroughput3Seg: function (streamType, band, through3SegList, through) {
-               	
-            vo.bandwidth = band;
-            vo.throughSeg = through;
-
-            this.metricBaselineUpdated(streamType, "Through3Seg", vo);
-
-            return vo;
-        }, 
-        
         
         addThroughputSeg: function (req, now) {
         	var vo = new MediaPlayer.vo.metrics.ThroughSeg();
 
         	vo.currentTime = now;
+            vo.stream = req.streamType;
         	 vo.startTime = req.requestStartDate;
              vo.responseTime = req.firstByteDate;
              vo.finishTime = req.requestEndDate;
-            vo.range = req.range;
+             vo.range = req.range;
             vo.duration = req.duration;
             vo.quality = req.quality; 
 

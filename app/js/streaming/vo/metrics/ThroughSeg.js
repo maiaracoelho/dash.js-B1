@@ -3,6 +3,7 @@ MediaPlayer.vo.metrics.ThroughSeg = function () {
     "use strict";
 
     this.index = NaN;
+    this.stream = null;
     this.currentTime = null;   		//Real-Time
     this.startTime = null;     		//Real-Time
     this.responseTime = null;     		//Real-Time

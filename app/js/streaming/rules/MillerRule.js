@@ -16,16 +16,9 @@ MediaPlayer.rules.MillerRule = function () {
 
         		//self.debug.log("currentBandwidth: " + currentBandwidth + "b/ms");
         		//self.debug.log("through: " + through+ "b/ms");
-        		self.debug.log("availableRepresentations.length: " + availableRepresentations.length);
-        	
+        		
         		for(var i = 0; i < throughList.length; i++){
         			quality = throughList[i].quality;
-        			
-        			if(throughList[i].stream){
-        				
-        			}else if (throughList[i].stream){//armazenar tipo no ThroughputSeg
-        				
-        			}
         			representation = availableRepresentations[quality];
         		
         			self.debug.log("Representation: " + representation.id);
@@ -132,7 +125,6 @@ MediaPlayer.rules.MillerRule = function () {
             	
             	max = self.manifestExt.getRepresentationCount1(data);
             	max -= 1;
-            	
             	representation1 = self.manifestExt.getRepresentationFor1(current, data);
             	currentBandwidth = self.manifestExt.getBandwidth1(representation1);
             	currentBandwidthMs = currentBandwidth/1000;

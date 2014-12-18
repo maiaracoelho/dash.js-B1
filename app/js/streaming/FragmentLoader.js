@@ -184,12 +184,6 @@ MediaPlayer.dependencies.FragmentLoader = function () {
                     self.debug.log("Segment Duration: " + request.duration + ":" + request.type);
 
    		        	self.metricsBaselinesModel.addThroughputSeg(request, now);
-   		        	
-   		        	metricsBaselineThrough = self.metricsBaselinesModel.getMetricsBaselineFor(request.streamType).Through3Seg;
-   		        	
-   		        	if(metricsBaselineThrough.length >= 3)
-   		           		metricsBaselineThrough.shift();
-   		           	self.metricsBaselinesModel.addThroughput3Seg(request, now);
 
    				}
    			}
