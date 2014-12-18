@@ -11,20 +11,25 @@ MediaPlayer.rules.MillerRule = function () {
         	t1 = 0,
         	      
         	insertThroughputs = function (throughList, availableRepresentations) {
-        		var self = this, representation, bandwidth, quality;
-        	
-
-        		//self.debug.log("currentBandwidth: " + currentBandwidth + "b/ms");
-        		//self.debug.log("through: " + through+ "b/ms");
+        		var self = this, representation, bandwidth, quality, downloadTime, segDuration, through;
         		
         		for(var i = 0; i < throughList.length; i++){
         			quality = throughList[i].quality;
         			representation = availableRepresentations[quality];
-        		
-        			self.debug.log("Representation: " + representation.id);
+        			bandwidth = self.metricsExt.getBandwidthForRepresentation(representation.id);
+        			bandwidth /= 1000; //bit/ms
+        			
+        			downloadTime = throughList[i].finishTime.getTime() - throughList[i].responseTime.getTime();
+        			segDuration = throughList[i].duration/1000; 
+        			
+        			through = (bandwidth * segDuration)/downloadTime; 
+        			
+        			self.debug.log("bandwidth: " + bandwidth);
+        			self.debug.log("through: " + through);
+        			
+            		self.metricsBaselinesModel.updateThroughputSeg(throughList[i], bandwidth, through);
 
         		}
-        		//self.metricsBaselinesModel.addThroughputSeg(lastRequest.stream, lastRequest, now, through);
 	                     
         	};
         
@@ -129,7 +134,7 @@ MediaPlayer.rules.MillerRule = function () {
             	currentBandwidth = self.manifestExt.getBandwidth1(representation1);
             	currentBandwidthMs = currentBandwidth/1000;
             	
-            	currentThrough = (lastRequest.mediaduration/downloadTime) * currentBandwidth; 	
+            	currentThrough = (lastRequest.mediaduration/downloadTime) * currentBandwidth; 	//verificar valores
             	
             	insertThroughputs.call(self, metricsBaseline.ThroughSeg, availableRepresentations);
             	
@@ -165,29 +170,29 @@ MediaPlayer.rules.MillerRule = function () {
             		self.debug.log("Baseline -  finish: " + (metricsBaseline.ThroughSeg[j].finishTime.getTime()- startRequest));
             		self.debug.log("Baseline -  range: " + metricsBaseline.ThroughSeg[j].range);
             		self.debug.log("Baseline -  duration: " + metricsBaseline.ThroughSeg[j].duration);
-            	}*/
-				
+            		self.debug.log("Baseline -  bandwidth: " + metricsBaseline.ThroughSeg[j].bandwidth);
+            		self.debug.log("Baseline -  throughSeg: " + metricsBaseline.ThroughSeg[j].throughSeg);
+            	}
+				*/
             	bufferMinTime1 = self.metricsBaselineExt.getBufferMinTime(time1, deltaBuffer, metrics, startRequest);
             	bufferMinTime2 = self.metricsBaselineExt.getBufferMinTime(time2, deltaBuffer, metrics, startRequest);
         		averageThrough = self.metricsBaselineExt.getAverageThrough(t1, time, metricsBaseline, startRequest);	
         		
-            	//self.debug.log("Baseline - bufferMinTime1: " + bufferMinTime1);
-            	//self.debug.log("Baseline - bufferMinTime2: " + bufferMinTime2);
-        		//self.debug.log("Baseline - averageThrough: " + averageThrough);
-        		
-
-        		
-        		if(current != max){
-        			representation2 = self.manifestExt.getRepresentationFor1(current+1, data);
-            		oneUpBandwidth = self.manifestExt.getBandwidth1(representation2);
-            		oneUpBandwidth /= 1000;
-        		}
+            	self.debug.log("Baseline - bufferMinTime1: " + bufferMinTime1);
+            	self.debug.log("Baseline - bufferMinTime2: " + bufferMinTime2);
+        		self.debug.log("Baseline - averageThrough: " + averageThrough);
         		
         		 if (isNaN(averageThrough) || isNaN(bufferMinTime1) || isNaN(bufferMinTime2)) {
                      self.debug.log("The averageThrough are NaN, bailing.");
                      deferred.resolve(new MediaPlayer.rules.SwitchRequest(current));
                  }else{
-            			self.debug.log("Começa a regra");
+         			self.debug.log("Começa a regra");
+
+                	 if(current != max){
+             			representation2 = self.manifestExt.getRepresentationFor1(current+1, data);
+                 		oneUpBandwidth = self.manifestExt.getBandwidth1(representation2);
+                 		oneUpBandwidth /= 1000;
+             		}
 
                 	 if(runningFastStart &&
                              current != max &&

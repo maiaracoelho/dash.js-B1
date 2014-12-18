@@ -55,14 +55,6 @@ Dash.dependencies.DashMetricsBaselineExtensions = function () {
 	 	return this.min(bufferMinArrayTemp);
     },
     
-    getBuffersMin = function (metricsBaseline) {
-        if (metricsBaseline == null) {
-            return [];
-        }
-
-        return !!metricsBaseline.BufferMin ? metricsBaseline.BufferMin : [];
-    },
-    
     getAverageThrough = function (time1, time, metricsBaseline, startSessionTime) {
     	var throughList = metricsBaseline.ThroughSeg,
     	begin = 0, 
@@ -78,7 +70,7 @@ Dash.dependencies.DashMetricsBaselineExtensions = function () {
     	//this.debug.log("Baseline - T1: " + time1+" ms");
 
     	while(begin < end){
-    		startTime = throughList[begin].startTime.getTime() - startSessionTime; 
+    		startTime = throughList[begin].responseTime.getTime() - startSessionTime; 
     		finishTime = throughList[begin].finishTime.getTime() - startSessionTime;
     		
 	    	//this.debug.log("Baseline - throughSeg: "+ throughList[begin].throughSeg);
@@ -105,7 +97,7 @@ Dash.dependencies.DashMetricsBaselineExtensions = function () {
     		begin++;
     	}
     	
-    	//this.debug.log("Baseline - Segments number: "+ countSegs);
+    	this.debug.log("Baseline - Segments number: "+ countSegs);
 
     	return (somaThroughInters/somaInters);
         
@@ -115,8 +107,30 @@ Dash.dependencies.DashMetricsBaselineExtensions = function () {
         if (metricsBaseline == null) {
             return [];
         }
+        
+        var throughList = metrics.ThroughSeg,
+        	throughListLength,
+        	throughListLastIndex,
+        	sumThrough = 0,
+        	averageThrough = 0,
+        	elem = 0;
+    
+        if (throughList === null || throughList.length <= 0) {
+        	return null;
+        }
 
-        return !metricsBaseline.Through3Seg ? metricsBaseline.Through3Seg : [];
+        throughListLength = throughList.length;
+        throughListIndex = throughListLength - 1;
+
+        while (httpListIndex > throughListLength - 3) {
+        		sumThrough += throughList[throughListIndex].throughSeg;   //  bit/ms
+        		httpListLastIndex -= 1;
+        		elem += 1;
+        }
+		
+		averageThrough = through/elem;
+		
+        return averageThrough;
     }, 
     
     getThroughSegs = function (metricsBaseline) {
@@ -130,7 +144,6 @@ Dash.dependencies.DashMetricsBaselineExtensions = function () {
     return {
     	debug : undefined,
     	min : min,
-    	getBuffersMin : getBuffersMin,
     	getBufferMinTime : getBufferMinTime,
     	getAverageThrough : getAverageThrough,
     	getAverageThrough3Segs : getAverageThrough3Segs
