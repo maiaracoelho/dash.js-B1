@@ -55,7 +55,6 @@ MediaPlayer.rules.MillerRule = function () {
                 lastRequest = self.metricsExt.getLastHttpRequest(metrics),
                 firstRequest = self.metricsExt.getFirstHttpRequest(metrics), 											//First Request n(0)
                 currentBufferLevel  = self.metricsExt.getCurrentBufferLevel(metrics),		//b(t)
-                bDelay=0,																	//Onde sera aplicado? (ms)
                 bMin=8000,
                 bLow=16000,
                 bHigh=40000,																//self.metricsExt.getMaxIndexForBufferType(lastRequest.stream)
@@ -82,7 +81,9 @@ MediaPlayer.rules.MillerRule = function () {
                 bufferMinTime1,
                 bufferMinTime2,
                 averageThrough,
-                currentBandwidthMs = 0;
+                currentBandwidthMs = 0,
+                p = MediaPlayer.rules.SwitchRequest.prototype.DEFAULT,
+                bDelay = 0;
                 
             	self.debug.log("Baseline - Regra TR5 MillerRule...");
              	self.debug.log("Baseline - Tamanho HttpList: " + httpRequestList.length);
@@ -184,7 +185,7 @@ MediaPlayer.rules.MillerRule = function () {
         		
         		 if (isNaN(averageThrough) || isNaN(bufferMinTime1) || isNaN(bufferMinTime2)) {
                      self.debug.log("The averageThrough are NaN, bailing.");
-                     deferred.resolve(new MediaPlayer.rules.SwitchRequest(current));
+                     deferred.resolve(new MediaPlayer.rules.SwitchRequest(current, p, bDelay));
                  }else{
          			self.debug.log("Começa a regra");
 
@@ -218,10 +219,10 @@ MediaPlayer.rules.MillerRule = function () {
                           	}
                           	if(currentBufferLevel.level > bHigh){
                                  self.debug.log("Apply delay 1");
-                                 //deferred.resolve(bHigh - lastRequest.mediaduration);
+                                 bDelay = bHigh - lastRequest.mediaduration;
                           	}
                           }
-                          deferred.resolve(new MediaPlayer.rules.SwitchRequest(current));
+                          deferred.resolve(new MediaPlayer.rules.SwitchRequest(current, p, bDelay));
                        }else{
                 		   self.debug.log("runningFastStart not true");
                     	   runningFastStart = false;
@@ -237,20 +238,21 @@ MediaPlayer.rules.MillerRule = function () {
                            }else if(currentBufferLevel.level < bHigh){
                         		 if(current == max || oneUpBandwidth >= ALPHA_5 * averageThrough){
                                         self.debug.log("Apply delay 2");
-                                        //deferred.resolve(Math.max(currentBuffer.level - lastRequest.mediaduration, bOpt));
+                                        bDelay = Math.max(currentBuffer.level - lastRequest.mediaduration, bOpt);
                         		 }
                            }else{
                         		 if(current == max || oneUpBandwidth >= ALPHA_5 * averageThrough){
                                        self.debug.log("Apply delay 3");
-                                       //deferred.resolve(Math.max(currentBuffer.level - lastRequest.mediaduration, bOpt));
+                                       bDelay = Math.max(currentBuffer.level - lastRequest.mediaduration, bOpt);
                         		 }else{
                                      	self.debug.log("Up One");
              								current += 1;
                         		 }
                            }
                            self.debug.log("Current: " + current);
+                           self.debug.log("bDelay: " + bDelay);
 
-                           deferred.resolve(new MediaPlayer.rules.SwitchRequest(current));                            	   
+                           deferred.resolve(new MediaPlayer.rules.SwitchRequest(current, p, bDelay));                            	   
                         }
                      }
         		 	time1 = time2 + 1;

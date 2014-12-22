@@ -63,6 +63,8 @@ MediaPlayer.dependencies.BufferController = function () {
         data = null,
         buffer = null,
         minBufferTime,
+    	newDelay = 0,
+
         
         playListMetrics = null,
         playListTraceMetrics = null,
@@ -1016,7 +1018,7 @@ MediaPlayer.dependencies.BufferController = function () {
 
         validate = function () {
             var self = this,
-                newQuality,
+            	newQuality,
                 qualityChanged = false,
                 now = new Date(),
                 currentVideoTime = self.videoModel.getCurrentTime();
@@ -1052,26 +1054,41 @@ MediaPlayer.dependencies.BufferController = function () {
             if (state === READY) {
                 setState.call(self, VALIDATING);
                 var manifestMinBufferTime = self.manifestModel.getValue().minBufferTime;   //Recuperando o MPD e decidindo qual tempo minimo utilizar...
-                self.bufferExt.decideBufferLength(manifestMinBufferTime, periodInfo.duration, waitingForBuffer).then(
-                    function (time) {
-                        //self.debug.log("Min Buffer time: " + time);
-                        self.setMinBufferTime(time);
-                        self.requestScheduler.adjustExecuteInterval();
-                    }
-                );
+                
+                /** Aplicando o Delay se ele for diferente de zero - Baseline TR5 Maiara**/
+                //if (newDelay == 0){
+                	self.bufferExt.decideBufferLength(manifestMinBufferTime, periodInfo.duration, waitingForBuffer).then(
+                            function (time) {
+                                //self.debug.log("Min Buffer time: " + time);
+                                self.setMinBufferTime(time);
+                                self.requestScheduler.adjustExecuteInterval();
+                            }
+                        );
+                //}else{
+                //	self.setMinBufferTime(newDelay);
+                    self.requestScheduler.adjustExecuteInterval();
+               // }
+                /****/
+                
                
                 self.abrController.getPlaybackQuality(type, data, availableRepresentations).then(
                     function (result) {
                         //self.debug.log("Resultado");
 
                         var quality = result.quality;
+                        var delay = result.delay;
+                        
                         //self.debug.log(type + " Playback quality: " + quality);
                         //self.debug.log("Populate " + type + " buffers.");
 
                         if (quality !== undefined) {
                             newQuality = quality;
                         }
-
+                        
+                        /** Aplicando o Delay se ele for diferente de zero - Baseline TR5 Maiara**/
+                        newDelay = delay;
+                        /****/
+                        
                         qualityChanged = (quality !== requiredQuality);
 
                         if (qualityChanged === true) {
@@ -1124,53 +1141,6 @@ MediaPlayer.dependencies.BufferController = function () {
             }
         };
         
-        /******inserção das métricas que serão utilizadas pelas regras do Baseline****implementado por Maiara Coelho***
-               
-        insertThroughSeg = function (now, repBitrate, req, downloadTime) {
-        	var through, segDuration, self = this, metricsBaselineThrough;
-        	
-        	metricsBaselineThrough = self.metricsBaselinesModel.getMetricsBaselineFor(type).ThroughSeg;
-			//self.debug.log("Baseline - Tamanho do Vetor ThroughSeg: " + metricsBaselineThrough.length +" Type: " +type);
-        	
-        	segDuration = req.mediaduration; 
-        	through = (repBitrate * segDuration)/downloadTime; 
-       
-        	self.metricsBaselinesModel.addThroughputSeg(type, req, now, through);
-                       
-        }, 
-        
-        preInsertThroughSeg = function (metrics) {
-        	var self = this, currentRep, qual, repBitrate, req, downloadTime, now = new Date();
-
-        	req = self.metricsExt.getCurrentHttpRequest(metrics);
-            
-   			if (req != null) {
-   				if (req.mediaduration != null ||
-   						req.mediaduration != undefined ||
-   						req.mediaduration > 0 ) {
-    		
-   					downloadTime = req.tfinish.getTime() - req.tresponse.getTime();
-   					self.debug.log("downloadTime: " + downloadTime + " ms");
-            
-   					qual = self.abrController.getQualityFor(type);
-   					self.debug.log("qual: " + qual);
-            
-   					currentRep = self.manifestExt.getRepresentationFor1(qual, data);
-   					self.debug.log("currentRep: " + currentRep.id);
-        	
-   					repBitrate = self.manifestExt.getBandwidth1(currentRep);
-   					self.debug.log("repBitrate: " + repBitrate);
-
-   					//insertThroughput3Seg.call(self, now, repBitrate, req, downloadTime);
-   					//insertThroughSeg.call(self, now, repBitrate, req, downloadTime);
-   				}
-   			}
-   			  };
-             *******************Fim***************************implementado por Maiara Coelho******/          
-      
-        
-        
-
     return {
         videoModel: undefined,
         metricsModel: undefined,
@@ -1239,11 +1209,20 @@ MediaPlayer.dependencies.BufferController = function () {
             );
 
             self.indexHandler.setIsDynamic(isDynamic);
-            self.bufferExt.decideBufferLength(manifest.minBufferTime, periodInfo, waitingForBuffer).then(
-                function (time) {
-                    self.setMinBufferTime(time);
-                }
-            );
+            /** Aplicando o Delay se ele for diferente de zero - Baseline TR5 Maiara**/
+            //if (newDelay == 0){
+            	self.bufferExt.decideBufferLength(manifestMinBufferTime, periodInfo.duration, waitingForBuffer).then(
+                        function (time) {
+                            //self.debug.log("Min Buffer time: " + time);
+                            self.setMinBufferTime(time);
+                            self.requestScheduler.adjustExecuteInterval();
+                        }
+                    );
+           // }else{
+            //	self.setMinBufferTime(newDelay);
+               // self.requestScheduler.adjustExecuteInterval();
+           // }
+            /****/
         },
 
         getType: function () {
