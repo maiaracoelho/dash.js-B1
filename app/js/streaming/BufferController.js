@@ -63,9 +63,7 @@ MediaPlayer.dependencies.BufferController = function () {
         data = null,
         buffer = null,
         minBufferTime,
-    	newDelay = 0,
 
-        
         playListMetrics = null,
         playListTraceMetrics = null,
         playListTraceMetricsClosed = true,
@@ -1054,41 +1052,26 @@ MediaPlayer.dependencies.BufferController = function () {
             if (state === READY) {
                 setState.call(self, VALIDATING);
                 var manifestMinBufferTime = self.manifestModel.getValue().minBufferTime;   //Recuperando o MPD e decidindo qual tempo minimo utilizar...
-                
-                /** Aplicando o Delay se ele for diferente de zero - Baseline TR5 Maiara**/
-                //if (newDelay == 0){
-                	self.bufferExt.decideBufferLength(manifestMinBufferTime, periodInfo.duration, waitingForBuffer).then(
+                self.bufferExt.decideBufferLength(manifestMinBufferTime, periodInfo.duration, waitingForBuffer).then(
                             function (time) {
                                 //self.debug.log("Min Buffer time: " + time);
                                 self.setMinBufferTime(time);
                                 self.requestScheduler.adjustExecuteInterval();
                             }
                         );
-                //}else{
-                //	self.setMinBufferTime(newDelay);
-                    self.requestScheduler.adjustExecuteInterval();
-               // }
-                /****/
-                
                
                 self.abrController.getPlaybackQuality(type, data, availableRepresentations).then(
                     function (result) {
                         //self.debug.log("Resultado");
 
                         var quality = result.quality;
-                        var delay = result.delay;
-                        
                         //self.debug.log(type + " Playback quality: " + quality);
                         //self.debug.log("Populate " + type + " buffers.");
 
                         if (quality !== undefined) {
                             newQuality = quality;
                         }
-                        
-                        /** Aplicando o Delay se ele for diferente de zero - Baseline TR5 Maiara**/
-                        newDelay = delay;
-                        /****/
-                        
+                     
                         qualityChanged = (quality !== requiredQuality);
 
                         if (qualityChanged === true) {
@@ -1209,20 +1192,11 @@ MediaPlayer.dependencies.BufferController = function () {
             );
 
             self.indexHandler.setIsDynamic(isDynamic);
-            /** Aplicando o Delay se ele for diferente de zero - Baseline TR5 Maiara**/
-            //if (newDelay == 0){
-            	self.bufferExt.decideBufferLength(manifestMinBufferTime, periodInfo.duration, waitingForBuffer).then(
-                        function (time) {
-                            //self.debug.log("Min Buffer time: " + time);
-                            self.setMinBufferTime(time);
-                            self.requestScheduler.adjustExecuteInterval();
-                        }
-                    );
-           // }else{
-            //	self.setMinBufferTime(newDelay);
-               // self.requestScheduler.adjustExecuteInterval();
-           // }
-            /****/
+            self.bufferExt.decideBufferLength(manifest.minBufferTime, periodInfo, waitingForBuffer).then(
+                function (time) {
+                    self.setMinBufferTime(time);
+                }
+            );
         },
 
         getType: function () {
@@ -1464,9 +1438,7 @@ MediaPlayer.dependencies.BufferController = function () {
 
         start: doStart,
         seek: doSeek,
-        stop: doStop,
-        getRepresentationForQuality:getRepresentationForQuality
-        
+        stop: doStop        
     };
 };
 

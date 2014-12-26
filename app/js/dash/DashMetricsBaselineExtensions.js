@@ -103,33 +103,32 @@ Dash.dependencies.DashMetricsBaselineExtensions = function () {
         
     },
     
-    getAverageThrough3Segs = function (metricsBaseline) {
+    getAverageThrough3Segs = function (numSegs, metricsBaseline) {
         if (metricsBaseline == null) {
             return [];
         }
         
-        var throughList = metrics.ThroughSeg,
+        var throughList = metricsBaseline.ThroughSeg,
         	throughListLength,
-        	throughListLastIndex,
+        	throughListIndex,
         	sumThrough = 0,
-        	averageThrough = 0,
-        	elem = 0;
+        	averageThrough = 0;
     
-        if (throughList === null || throughList.length <= 0) {
-        	return null;
+        if (throughList == null || throughList.length <= 0) {
+            return [];
         }
 
         throughListLength = throughList.length;
         throughListIndex = throughListLength - 1;
 
-        while (httpListIndex > throughListLength - 3) {
+        while (throughListIndex >= throughListLength - numSegs) {
         		sumThrough += throughList[throughListIndex].throughSeg;   //  bit/ms
-        		httpListLastIndex -= 1;
-        		elem += 1;
+        		throughListIndex -= 1;
         }
 		
-		averageThrough = through/elem;
-		
+		averageThrough = sumThrough/numSegs;
+    	this.debug.log("getAverageThrough3Segs");
+
         return averageThrough;
     }, 
     

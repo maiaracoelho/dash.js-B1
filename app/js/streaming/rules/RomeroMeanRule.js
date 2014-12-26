@@ -4,24 +4,46 @@
 
 MediaPlayer.rules.RomeroMeanRule = function () {
     "use strict";
+    var insertThroughputs = function (throughList, availableRepresentations) {
+		var self = this, representation, bandwidth, quality, downloadTime, segDuration, through;
+		
+		for(var i = 0; i < throughList.length; i++){
+			quality = throughList[i].quality;
+			representation = availableRepresentations[quality];
+			bandwidth = self.metricsExt.getBandwidthForRepresentation(representation.id);
+			bandwidth /= 1000; //bit/ms
+			
+			downloadTime = throughList[i].finishTime.getTime() - throughList[i].responseTime.getTime();
+			segDuration = throughList[i].duration/1000; 
+			
+			through = (bandwidth * segDuration)/downloadTime; 
+			
+			self.debug.log("bandwidth: " + bandwidth);
+			self.debug.log("through: " + through);
+			
+    		self.metricsBaselinesModel.updateThroughputSeg(throughList[i], bandwidth, through);
 
+		}
+                 
+	};
     
     return {
         debug: undefined,
         manifestExt: undefined,
         metricsExt: undefined,
         metricsBaselineExt: undefined,
+        metricsBaselinesModel: undefined,
         /**
          * @param {current} current - Índice da representação corrente
          * @param {metrics} metrics - Metricas armazenadas em MetricsList
          * @param {data} data - Dados de audio ou vídeo
          * @memberof RomeroMeanRule#
          */
-        checkIndex: function (current, metrics, data, metricsBaseline) {
+        checkIndex: function (current, metrics, data, metricsBaseline, availableRepresentations) {
 
             var self = this,
-            	lastRequest = self.metricsExt.getCurrentHttpRequest(metrics),
-            	through3SegList = metricsBaseline.Through3Seg,
+            	httpRequestList = self.metricsExt.getHttpRequests(metrics),
+            	lastRequest = self.metricsExt.getLastHttpRequest(metrics),
             	downloadTime,
                 now = new Date(),														//current timestamp
                 averageThroughput,
@@ -36,69 +58,52 @@ MediaPlayer.rules.RomeroMeanRule = function () {
                 representationCur = current,
                 numSegs = 3,															//numero de segmentos que serão calculados na media dos throughs
                 SENSIVITY = 0.95,
-                sumThroughs = 0;
+                currentBandwidthMs = 0;
 
             self.debug.log("Checking download ROMERO MEAN rule...");
-        	self.debug.log("Tamanho metrics HttpList: " + metrics.HttpList.length);
-        	self.debug.log("Tamanho metricsBaseline Through: " + metricsBaseline.ThroughSeg.length);
-        	self.debug.log("Tamanho metricsBaseline Through3: " + metricsBaseline.Through3Seg.length);
+         	self.debug.log("Baseline - Tamanho HttpList: " + httpRequestList.length);
+        	self.debug.log("Baseline - Tamanho Through: " + metricsBaseline.ThroughSeg.length);
 
-            if (!metrics) {
-                //self.debug.log("No metrics, bailing.");
-                return Q.when(new MediaPlayer.rules.SwitchRequest());
-            }
-            
-            if (!metricsBaseline) {
-                //self.debug.log("No metricsBaseline, bailing.");
-                return Q.when(new MediaPlayer.rules.SwitchRequest());
-            }
+        	 if (!metrics) {
+             	//self.debug.log("No metrics, bailing.");
+             	return Q.when(new MediaPlayer.rules.SwitchRequest());
+             }
+             
+             if (!metricsBaseline) {
+             	//self.debug.log("No metrics Baseline, bailing.");
+             	return Q.when(new MediaPlayer.rules.SwitchRequest());
+             }
                         
-            if (lastRequest == null) {
-                //self.debug.log("No requests made for this stream yet, bailing.");
-                return Q.when(new MediaPlayer.rules.SwitchRequest());
-            }
+             if (lastRequest == null) {
+                 //self.debug.log("No requests made for this stream yet, bailing.");
+                 return Q.when(new MediaPlayer.rules.SwitchRequest());
+             }
 
-            if (lastRequest.mediaduration == null ||
-                lastRequest.mediaduration == undefined ||
-                lastRequest.mediaduration <= 0 ||
-                isNaN(lastRequest.mediaduration)) {
-                //self.debug.log("Don't know the duration of the last media fragment, bailing.");
-                return Q.when(new MediaPlayer.rules.SwitchRequest());
-            }
-            
             deferred = Q.defer();
             
-            downloadTime = (lastRequest.tfinish.getTime() - lastRequest.tresponse.getTime())/1000;
+        	downloadTime = (lastRequest.tfinish.getTime() - lastRequest.tresponse.getTime())/1000;
 
             max = self.manifestExt.getRepresentationCount1(data);
         	max -= 1;
         	
         	representation2 = self.manifestExt.getRepresentationFor1(current, data);
         	currentBandwidth = self.manifestExt.getBandwidth1(representation2);
-        	
-        	self.debug.log("Baseline - LastRequest Type: " + lastRequest.stream );
-            self.debug.log("Baseline - LastRequest.tfinish: " + lastRequest.tfinish);
-            self.debug.log("Baseline - DownloadTime: " + downloadTime + "s");
-            self.debug.log("Baseline - LastRequest.mediaduration: " + lastRequest.mediaduration + "s");
-			self.debug.log("Baseline - CurrentBandwidth: " + currentBandwidth + "bps");
-			self.debug.log("Baseline - Through3SegList.length: " + through3SegList.length + " Type: " + lastRequest.stream);
+        	currentBandwidthMs = currentBandwidth/1000;
 
-           	if (through3SegList.length == numSegs){
-           		
-           		for(var i=0; i < numSegs; i++){
-           			sumThroughs += through3SegList[i].throughSeg;
-    				self.debug.log("Baseline - Through"+ i +": " + through3SegList[i].throughSeg + "bps");
+        	insertThroughputs.call(self, metricsBaseline.ThroughSeg, availableRepresentations);
 
-           		}
-           		averageThroughput = sumThroughs/numSegs;
-           		
+           	if (metricsBaseline.ThroughSeg.length >= numSegs){
+
+           		averageThroughput = self.metricsBaselineExt.getAverageThrough3Segs(numSegs, metricsBaseline);	
            		averageThroughput = averageThroughput * SENSIVITY;
+           		
 				self.debug.log("Baseline - AverageThroughput: " + averageThroughput + "bps");
 					                	            
-				if (averageThroughput > currentBandwidth) {
+				if (averageThroughput > currentBandwidthMs) {
 					while (representationCur < max){
 						representation3 = self.manifestExt.getRepresentationFor1(representationCur + 1, data);
 						oneUpBandwidth = self.manifestExt.getBandwidth1(representation3);
+						oneUpBandwidth /= 1000;
 
         				if (oneUpBandwidth < averageThroughput){
         					//self.debug.log("switch up.");
@@ -113,7 +118,8 @@ MediaPlayer.rules.RomeroMeanRule = function () {
 					while (representationCur > 0){
 						representation1 = self.manifestExt.getRepresentationFor1(representationCur - 1, data);
 						oneDownBandwidth = self.manifestExt.getBandwidth1(representation1);
-						
+						oneDownBandwidth /= 1000;
+
 						if(oneDownBandwidth > averageThroughput){
 							//self.debug.log(" switch Down.");
 							current -= 1;

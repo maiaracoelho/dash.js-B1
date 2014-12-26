@@ -51,7 +51,6 @@ MediaPlayer.di.Context = function () {
             this.system.mapClass('downloadSimpleRule', MediaPlayer.rules.DownloadSimpleRule);
             this.system.mapClass('insufficientBufferRule', MediaPlayer.rules.InsufficientBufferRule);
             this.system.mapClass('limitSwitchesRule', MediaPlayer.rules.LimitSwitchesRule);
-            this.system.mapClass('millerRule', MediaPlayer.rules.MillerRule);
             this.system.mapClass('romeroAgressiveRule', MediaPlayer.rules.RomeroAgressiveRule);
             this.system.mapClass('romeroConservativeRule', MediaPlayer.rules.RomeroConservativeRule);
             this.system.mapClass('romeroMeanRule', MediaPlayer.rules.RomeroMeanRule);

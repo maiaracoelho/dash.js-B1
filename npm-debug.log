@@ -1,62 +1,433 @@
 0 info it worked if it ends with ok
-1 verbose cli [ '/usr/bin/nodejs', '/usr/bin/npm', '-g', 'install', 'yuidocjs.' ]
+1 verbose cli [ '/usr/bin/nodejs', '/usr/bin/npm', 'install', 'jsdoc@<=3.3.0' ]
 2 info using npm@1.3.10
 3 info using node@v0.10.25
-4 verbose cache add [ 'yuidocjs.', null ]
-5 verbose cache add name=undefined spec="yuidocjs." args=["yuidocjs.",null]
-6 verbose parsed url { protocol: null,
-6 verbose parsed url   slashes: null,
-6 verbose parsed url   auth: null,
-6 verbose parsed url   host: null,
-6 verbose parsed url   port: null,
-6 verbose parsed url   hostname: null,
-6 verbose parsed url   hash: null,
-6 verbose parsed url   search: null,
-6 verbose parsed url   query: null,
-6 verbose parsed url   pathname: 'yuidocjs.',
-6 verbose parsed url   path: 'yuidocjs.',
-6 verbose parsed url   href: 'yuidocjs.' }
-7 silly lockFile 7a878064-yuidocjs yuidocjs.
-8 verbose lock yuidocjs. /root/.npm/7a878064-yuidocjs.lock
-9 silly lockFile 7a878064-yuidocjs yuidocjs.
-10 silly lockFile 7a878064-yuidocjs yuidocjs.
-11 verbose addNamed [ 'yuidocjs.', '' ]
-12 verbose addNamed [ null, '*' ]
-13 silly lockFile 76dab99c-yuidocjs yuidocjs.@
-14 verbose lock yuidocjs.@ /root/.npm/76dab99c-yuidocjs.lock
-15 silly addNameRange { name: 'yuidocjs.', range: '*', hasData: false }
-16 verbose url raw yuidocjs.
-17 verbose url resolving [ 'https://registry.npmjs.org/', './yuidocjs.' ]
-18 verbose url resolved https://registry.npmjs.org/yuidocjs.
-19 info trying registry request attempt 1 at 14:55:34
-20 http GET https://registry.npmjs.org/yuidocjs.
-21 http 404 https://registry.npmjs.org/yuidocjs.
-22 silly registry.get cb [ 404,
-22 silly registry.get   { date: 'Mon, 15 Dec 2014 18:55:35 GMT',
+4 verbose readDependencies using package.json deps
+5 verbose cache add [ 'jsdoc@<=3.3.0', null ]
+6 verbose cache add name=undefined spec="jsdoc@<=3.3.0" args=["jsdoc@<=3.3.0",null]
+7 verbose parsed url { protocol: null,
+7 verbose parsed url   slashes: null,
+7 verbose parsed url   auth: null,
+7 verbose parsed url   host: null,
+7 verbose parsed url   port: null,
+7 verbose parsed url   hostname: null,
+7 verbose parsed url   hash: null,
+7 verbose parsed url   search: null,
+7 verbose parsed url   query: null,
+7 verbose parsed url   pathname: 'jsdoc@%3C=3.3.0',
+7 verbose parsed url   path: 'jsdoc@%3C=3.3.0',
+7 verbose parsed url   href: 'jsdoc@%3C=3.3.0' }
+8 verbose cache add name="jsdoc" spec="<=3.3.0" args=["jsdoc","<=3.3.0"]
+9 verbose parsed url { protocol: null,
+9 verbose parsed url   slashes: null,
+9 verbose parsed url   auth: null,
+9 verbose parsed url   host: null,
+9 verbose parsed url   port: null,
+9 verbose parsed url   hostname: null,
+9 verbose parsed url   hash: null,
+9 verbose parsed url   search: null,
+9 verbose parsed url   query: null,
+9 verbose parsed url   pathname: '%3C=3.3.0',
+9 verbose parsed url   path: '%3C=3.3.0',
+9 verbose parsed url   href: '%3C=3.3.0' }
+10 verbose addNamed [ 'jsdoc', '<=3.3.0' ]
+11 verbose addNamed [ null, '<=3.3.0' ]
+12 silly lockFile 01a8fe6d-jsdoc-3-3-0 jsdoc@<=3.3.0
+13 verbose lock jsdoc@<=3.3.0 /root/.npm/01a8fe6d-jsdoc-3-3-0.lock
+14 silly addNameRange { name: 'jsdoc', range: '<=3.3.0', hasData: false }
+15 verbose url raw jsdoc
+16 verbose url resolving [ 'https://registry.npmjs.org/', './jsdoc' ]
+17 verbose url resolved https://registry.npmjs.org/jsdoc
+18 info trying registry request attempt 1 at 10:18:12
+19 verbose etag "198LSADKXFYPGF6IXTLQZF1JJ"
+20 http GET https://registry.npmjs.org/jsdoc
+21 http 200 https://registry.npmjs.org/jsdoc
+22 silly registry.get cb [ 200,
+22 silly registry.get   { date: 'Fri, 26 Dec 2014 14:18:13 GMT',
 22 silly registry.get     server: 'CouchDB/1.5.0 (Erlang OTP/R16B03)',
+22 silly registry.get     etag: '"2YHP7IIRX74G4PB4APW45AFQ5"',
 22 silly registry.get     'content-type': 'application/json',
-22 silly registry.get     'cache-control': 'max-age=0',
-22 silly registry.get     'content-length': '52',
+22 silly registry.get     'cache-control': 'max-age=60',
+22 silly registry.get     'content-length': '31989',
 22 silly registry.get     'accept-ranges': 'bytes',
 22 silly registry.get     via: '1.1 varnish',
 22 silly registry.get     age: '0',
-22 silly registry.get     'x-served-by': 'cache-atl6223-ATL',
-22 silly registry.get     'x-cache': 'MISS',
-22 silly registry.get     'x-cache-hits': '0',
-22 silly registry.get     'x-timer': 'S1418669735.689440,VS0,VE26',
+22 silly registry.get     'x-served-by': 'cache-atl6229-ATL',
+22 silly registry.get     'x-cache': 'HIT',
+22 silly registry.get     'x-cache-hits': '1',
+22 silly registry.get     'x-timer': 'S1419603493.257031,VS0,VE108',
+22 silly registry.get     vary: 'Accept',
 22 silly registry.get     'keep-alive': 'timeout=10, max=50',
 22 silly registry.get     connection: 'Keep-Alive' } ]
-23 silly lockFile 76dab99c-yuidocjs yuidocjs.@
-24 silly lockFile 76dab99c-yuidocjs yuidocjs.@
-25 error 404 'yuidocjs.' is not in the npm registry.
-25 error 404 You should bug the author to publish it
-25 error 404
-25 error 404 Note that you can also install from a
-25 error 404 tarball, folder, or http url, or git url.
-26 error System Linux 3.13.0-39-generic
-27 error command "/usr/bin/nodejs" "/usr/bin/npm" "-g" "install" "yuidocjs."
-28 error cwd /home/dash/git/dash.js-1
-29 error node -v v0.10.25
-30 error npm -v 1.3.10
-31 error code E404
-32 verbose exit [ 1, true ]
+23 silly addNameRange number 2 { name: 'jsdoc', range: '<=3.3.0', hasData: true }
+24 silly addNameRange versions [ 'jsdoc',
+24 silly addNameRange   [ '0.0.0',
+24 silly addNameRange     '3.2.0-dev',
+24 silly addNameRange     '3.2.0',
+24 silly addNameRange     '3.2.1',
+24 silly addNameRange     '3.2.2',
+24 silly addNameRange     '3.3.0-alpha1',
+24 silly addNameRange     '3.3.0-alpha2',
+24 silly addNameRange     '3.3.0-alpha3',
+24 silly addNameRange     '3.3.0-alpha4',
+24 silly addNameRange     '3.3.0-alpha5',
+24 silly addNameRange     '3.3.0-alpha7',
+24 silly addNameRange     '3.3.0-alpha8',
+24 silly addNameRange     '3.3.0-alpha9',
+24 silly addNameRange     '3.3.0-alpha10',
+24 silly addNameRange     '3.3.0-alpha11',
+24 silly addNameRange     '3.3.0-alpha12',
+24 silly addNameRange     '3.3.0-alpha13' ] ]
+25 verbose addNamed [ 'jsdoc', '3.3.0-alpha13' ]
+26 verbose addNamed [ '3.3.0-alpha13', '3.3.0-alpha13' ]
+27 silly lockFile af369b9e-jsdoc-3-3-0-alpha13 jsdoc@3.3.0-alpha13
+28 verbose lock jsdoc@3.3.0-alpha13 /root/.npm/af369b9e-jsdoc-3-3-0-alpha13.lock
+29 silly lockFile c46955aa-rg-jsdoc-jsdoc-3-3-0-alpha13-tgz https://registry.npmjs.org/jsdoc/-/jsdoc-3.3.0-alpha13.tgz
+30 verbose lock https://registry.npmjs.org/jsdoc/-/jsdoc-3.3.0-alpha13.tgz /root/.npm/c46955aa-rg-jsdoc-jsdoc-3-3-0-alpha13-tgz.lock
+31 verbose addRemoteTarball [ 'https://registry.npmjs.org/jsdoc/-/jsdoc-3.3.0-alpha13.tgz',
+31 verbose addRemoteTarball   'ad64b989a4f6fbef3112ab1ee80908328a4ebfd2' ]
+32 info retry fetch attempt 1 at 10:18:13
+33 verbose fetch to= /root/tmp/npm-6053-SVqxfrLH/1419603493528-0.6667021738830954/tmp.tgz
+34 http GET https://registry.npmjs.org/jsdoc/-/jsdoc-3.3.0-alpha13.tgz
+35 http 200 https://registry.npmjs.org/jsdoc/-/jsdoc-3.3.0-alpha13.tgz
+36 verbose tar unpack /root/tmp/npm-6053-SVqxfrLH/1419603493528-0.6667021738830954/tmp.tgz
+37 silly lockFile 28728ae2-93528-0-6667021738830954-package tar:///root/tmp/npm-6053-SVqxfrLH/1419603493528-0.6667021738830954/package
+38 verbose lock tar:///root/tmp/npm-6053-SVqxfrLH/1419603493528-0.6667021738830954/package /root/.npm/28728ae2-93528-0-6667021738830954-package.lock
+39 silly lockFile 17c0fcbf-93528-0-6667021738830954-tmp-tgz tar:///root/tmp/npm-6053-SVqxfrLH/1419603493528-0.6667021738830954/tmp.tgz
+40 verbose lock tar:///root/tmp/npm-6053-SVqxfrLH/1419603493528-0.6667021738830954/tmp.tgz /root/.npm/17c0fcbf-93528-0-6667021738830954-tmp-tgz.lock
+41 silly gunzTarPerm modes [ '755', '644' ]
+42 silly gunzTarPerm extractEntry package.json
+43 silly gunzTarPerm extractEntry .npmignore
+44 silly gunzTarPerm extractEntry README.md
+45 silly gunzTarPerm extractEntry cli.js
+46 silly gunzTarPerm extractEntry jsdoc.js
+47 silly gunzTarPerm extractEntry CONTRIBUTING.md
+48 silly gunzTarPerm extractEntry LICENSE.md
+49 silly gunzTarPerm extractEntry changes.md
+50 silly gunzTarPerm extractEntry conf.json.EXAMPLE
+51 silly gunzTarPerm extractEntry lib/jsdoc/augment.js
+52 silly gunzTarPerm extractEntry lib/jsdoc/fs.js
+53 silly gunzTarPerm extractEntry lib/jsdoc/name.js
+54 silly gunzTarPerm extractEntry lib/jsdoc/tutorial.js
+55 silly gunzTarPerm extractEntry lib/jsdoc/doclet.js
+56 silly gunzTarPerm extractEntry lib/jsdoc/path.js
+57 silly gunzTarPerm extractEntry lib/jsdoc/borrow.js
+58 silly gunzTarPerm extractEntry lib/jsdoc/readme.js
+59 silly gunzTarPerm extractEntry lib/jsdoc/schema.js
+60 silly gunzTarPerm extractEntry lib/jsdoc/template.js
+61 silly gunzTarPerm extractEntry lib/jsdoc/config.js
+62 silly gunzTarPerm extractEntry lib/jsdoc/tag.js
+63 silly gunzTarPerm extractEntry lib/jsdoc/package.js
+64 silly gunzTarPerm extractEntry lib/jsdoc/plugins.js
+65 silly gunzTarPerm extractEntry lib/jsdoc/tag/dictionary.js
+66 silly gunzTarPerm extractEntry lib/jsdoc/tag/inline.js
+67 silly gunzTarPerm extractEntry lib/jsdoc/tag/type.js
+68 silly gunzTarPerm extractEntry lib/jsdoc/tag/validator.js
+69 silly gunzTarPerm extractEntry lib/jsdoc/tag/dictionary/definitions.js
+70 silly gunzTarPerm extractEntry lib/jsdoc/src/astbuilder.js
+71 silly gunzTarPerm extractEntry lib/jsdoc/src/astnode.js
+72 silly gunzTarPerm extractEntry lib/jsdoc/src/filter.js
+73 silly gunzTarPerm extractEntry lib/jsdoc/src/handlers.js
+74 silly gunzTarPerm extractEntry lib/jsdoc/src/parser.js
+75 silly gunzTarPerm extractEntry lib/jsdoc/src/scanner.js
+76 silly gunzTarPerm extractEntry lib/jsdoc/src/syntax.js
+77 silly gunzTarPerm extractEntry lib/jsdoc/src/visitor.js
+78 silly gunzTarPerm extractEntry lib/jsdoc/src/walker.js
+79 silly gunzTarPerm extractEntry lib/jsdoc/tutorial/resolver.js
+80 silly gunzTarPerm extractEntry lib/jsdoc/opts/argparser.js
+81 silly gunzTarPerm extractEntry lib/jsdoc/opts/args.js
+82 silly gunzTarPerm extractEntry lib/jsdoc/util/doop.js
+83 silly gunzTarPerm extractEntry lib/jsdoc/util/dumper.js
+84 silly gunzTarPerm extractEntry lib/jsdoc/util/error.js
+85 silly gunzTarPerm extractEntry lib/jsdoc/util/logger.js
+86 silly gunzTarPerm extractEntry lib/jsdoc/util/markdown.js
+87 silly gunzTarPerm extractEntry lib/jsdoc/util/runtime.js
+88 silly gunzTarPerm extractEntry lib/jsdoc/util/templateHelper.js
+89 silly gunzTarPerm extractEntry node/fs.js
+90 silly gunzTarPerm extractEntry templates/README.md
+91 silly gunzTarPerm extractEntry templates/default/README.md
+92 silly gunzTarPerm extractEntry templates/default/publish.js
+93 silly gunzTarPerm extractEntry templates/default/static/fonts/OpenSans-Light-webfont.eot
+94 silly gunzTarPerm extractEntry templates/default/static/fonts/OpenSans-Bold-webfont.eot
+95 silly gunzTarPerm extractEntry templates/default/static/fonts/OpenSans-Bold-webfont.woff
+96 silly gunzTarPerm extractEntry templates/default/static/fonts/OpenSans-BoldItalic-webfont.eot
+97 silly gunzTarPerm extractEntry templates/default/static/fonts/OpenSans-BoldItalic-webfont.svg
+98 silly gunzTarPerm extractEntry templates/default/static/fonts/OpenSans-BoldItalic-webfont.woff
+99 silly gunzTarPerm extractEntry templates/default/static/fonts/OpenSans-Italic-webfont.eot
+100 silly gunzTarPerm extractEntry templates/default/static/fonts/OpenSans-Italic-webfont.svg
+101 silly gunzTarPerm extractEntry templates/default/static/fonts/OpenSans-Italic-webfont.woff
+102 silly gunzTarPerm extractEntry templates/default/static/fonts/OpenSans-Bold-webfont.svg
+103 silly gunzTarPerm extractEntry templates/default/static/fonts/OpenSans-Light-webfont.svg
+104 silly gunzTarPerm extractEntry templates/default/static/fonts/OpenSans-Light-webfont.woff
+105 silly gunzTarPerm extractEntry templates/default/static/fonts/OpenSans-LightItalic-webfont.eot
+106 silly gunzTarPerm extractEntry templates/default/static/fonts/OpenSans-LightItalic-webfont.svg
+107 silly gunzTarPerm extractEntry templates/default/static/fonts/OpenSans-LightItalic-webfont.woff
+108 silly gunzTarPerm extractEntry templates/default/static/fonts/OpenSans-Regular-webfont.eot
+109 silly gunzTarPerm extractEntry templates/default/static/fonts/OpenSans-Regular-webfont.svg
+110 silly gunzTarPerm extractEntry templates/default/static/fonts/OpenSans-Regular-webfont.woff
+111 silly gunzTarPerm extractEntry templates/default/static/scripts/linenumber.js
+112 silly gunzTarPerm extractEntry templates/default/static/scripts/prettify/lang-css.js
+113 silly gunzTarPerm extractEntry templates/default/static/scripts/prettify/prettify.js
+114 silly gunzTarPerm extractEntry templates/default/static/scripts/prettify/Apache-License-2.0.txt
+115 silly gunzTarPerm extractEntry templates/default/static/styles/jsdoc-default.css
+116 silly gunzTarPerm extractEntry templates/default/static/styles/prettify-jsdoc.css
+117 silly gunzTarPerm extractEntry templates/default/static/styles/prettify-tomorrow.css
+118 silly gunzTarPerm extractEntry templates/default/tmpl/members.tmpl
+119 silly gunzTarPerm extractEntry templates/default/tmpl/augments.tmpl
+120 silly gunzTarPerm extractEntry templates/default/tmpl/details.tmpl
+121 silly gunzTarPerm extractEntry templates/default/tmpl/example.tmpl
+122 silly gunzTarPerm extractEntry templates/default/tmpl/examples.tmpl
+123 silly gunzTarPerm extractEntry templates/default/tmpl/exceptions.tmpl
+124 silly gunzTarPerm extractEntry templates/default/tmpl/layout.tmpl
+125 silly gunzTarPerm extractEntry templates/default/tmpl/mainpage.tmpl
+126 silly gunzTarPerm extractEntry templates/default/tmpl/container.tmpl
+127 silly gunzTarPerm extractEntry templates/default/tmpl/method.tmpl
+128 silly gunzTarPerm extractEntry templates/default/tmpl/params.tmpl
+129 silly gunzTarPerm extractEntry templates/default/tmpl/properties.tmpl
+130 silly gunzTarPerm extractEntry templates/default/tmpl/returns.tmpl
+131 silly gunzTarPerm extractEntry templates/default/tmpl/source.tmpl
+132 silly gunzTarPerm extractEntry templates/default/tmpl/tutorial.tmpl
+133 silly gunzTarPerm extractEntry templates/default/tmpl/type.tmpl
+134 silly gunzTarPerm extractEntry templates/haruki/README.md
+135 silly gunzTarPerm extractEntry templates/haruki/publish.js
+136 silly gunzTarPerm extractEntry Apache_License_2.0.txt
+137 silly gunzTarPerm extractEntry plugins/commentConvert.js
+138 silly gunzTarPerm extractEntry plugins/escapeHtml.js
+139 silly gunzTarPerm extractEntry plugins/eventDumper.js
+140 silly gunzTarPerm extractEntry plugins/markdown.js
+141 silly gunzTarPerm extractEntry plugins/overloadHelper.js
+142 silly gunzTarPerm extractEntry plugins/commentsOnly.js
+143 silly gunzTarPerm extractEntry plugins/railsTemplate.js
+144 silly gunzTarPerm extractEntry plugins/shout.js
+145 silly gunzTarPerm extractEntry plugins/sourcetag.js
+146 silly gunzTarPerm extractEntry plugins/summarize.js
+147 silly gunzTarPerm extractEntry plugins/partial.js
+148 silly gunzTarPerm extractEntry plugins/test/fixtures/markdown.js
+149 silly gunzTarPerm extractEntry plugins/test/fixtures/overloadHelper.js
+150 silly gunzTarPerm extractEntry plugins/test/fixtures/railsTemplate.js.erb
+151 silly gunzTarPerm extractEntry plugins/test/specs/commentConvert.js
+152 silly gunzTarPerm extractEntry plugins/test/specs/escapeHtml.js
+153 silly gunzTarPerm extractEntry plugins/test/specs/markdown.js
+154 silly gunzTarPerm extractEntry plugins/test/specs/overloadHelper.js
+155 silly gunzTarPerm extractEntry plugins/test/specs/railsTemplate.js
+156 silly gunzTarPerm extractEntry plugins/test/specs/shout.js
+157 silly gunzTarPerm extractEntry plugins/test/specs/sourcetag.js
+158 silly gunzTarPerm extractEntry plugins/test/specs/summarize.js
+159 silly lockFile 28728ae2-93528-0-6667021738830954-package tar:///root/tmp/npm-6053-SVqxfrLH/1419603493528-0.6667021738830954/package
+160 silly lockFile 28728ae2-93528-0-6667021738830954-package tar:///root/tmp/npm-6053-SVqxfrLH/1419603493528-0.6667021738830954/package
+161 silly lockFile 17c0fcbf-93528-0-6667021738830954-tmp-tgz tar:///root/tmp/npm-6053-SVqxfrLH/1419603493528-0.6667021738830954/tmp.tgz
+162 silly lockFile 17c0fcbf-93528-0-6667021738830954-tmp-tgz tar:///root/tmp/npm-6053-SVqxfrLH/1419603493528-0.6667021738830954/tmp.tgz
+163 verbose tar pack [ '/root/.npm/jsdoc/3.3.0-alpha13/package.tgz',
+163 verbose tar pack   '/root/tmp/npm-6053-SVqxfrLH/1419603493528-0.6667021738830954/package' ]
+164 verbose tarball /root/.npm/jsdoc/3.3.0-alpha13/package.tgz
+165 verbose folder /root/tmp/npm-6053-SVqxfrLH/1419603493528-0.6667021738830954/package
+166 silly lockFile 28728ae2-93528-0-6667021738830954-package tar:///root/tmp/npm-6053-SVqxfrLH/1419603493528-0.6667021738830954/package
+167 verbose lock tar:///root/tmp/npm-6053-SVqxfrLH/1419603493528-0.6667021738830954/package /root/.npm/28728ae2-93528-0-6667021738830954-package.lock
+168 silly lockFile 3520d862--jsdoc-3-3-0-alpha13-package-tgz tar:///root/.npm/jsdoc/3.3.0-alpha13/package.tgz
+169 verbose lock tar:///root/.npm/jsdoc/3.3.0-alpha13/package.tgz /root/.npm/3520d862--jsdoc-3-3-0-alpha13-package-tgz.lock
+170 silly lockFile 28728ae2-93528-0-6667021738830954-package tar:///root/tmp/npm-6053-SVqxfrLH/1419603493528-0.6667021738830954/package
+171 silly lockFile 28728ae2-93528-0-6667021738830954-package tar:///root/tmp/npm-6053-SVqxfrLH/1419603493528-0.6667021738830954/package
+172 silly lockFile 3520d862--jsdoc-3-3-0-alpha13-package-tgz tar:///root/.npm/jsdoc/3.3.0-alpha13/package.tgz
+173 silly lockFile 3520d862--jsdoc-3-3-0-alpha13-package-tgz tar:///root/.npm/jsdoc/3.3.0-alpha13/package.tgz
+174 silly lockFile 2cfd8a7b--npm-jsdoc-3-3-0-alpha13-package /root/.npm/jsdoc/3.3.0-alpha13/package
+175 verbose lock /root/.npm/jsdoc/3.3.0-alpha13/package /root/.npm/2cfd8a7b--npm-jsdoc-3-3-0-alpha13-package.lock
+176 silly lockFile 2cfd8a7b--npm-jsdoc-3-3-0-alpha13-package /root/.npm/jsdoc/3.3.0-alpha13/package
+177 silly lockFile 2cfd8a7b--npm-jsdoc-3-3-0-alpha13-package /root/.npm/jsdoc/3.3.0-alpha13/package
+178 verbose tar unpack /root/.npm/jsdoc/3.3.0-alpha13/package.tgz
+179 silly lockFile 0a19ca88--npm-jsdoc-3-3-0-alpha13-package tar:///root/.npm/jsdoc/3.3.0-alpha13/package
+180 verbose lock tar:///root/.npm/jsdoc/3.3.0-alpha13/package /root/.npm/0a19ca88--npm-jsdoc-3-3-0-alpha13-package.lock
+181 silly lockFile 3520d862--jsdoc-3-3-0-alpha13-package-tgz tar:///root/.npm/jsdoc/3.3.0-alpha13/package.tgz
+182 verbose lock tar:///root/.npm/jsdoc/3.3.0-alpha13/package.tgz /root/.npm/3520d862--jsdoc-3-3-0-alpha13-package-tgz.lock
+183 silly gunzTarPerm modes [ '755', '644' ]
+184 silly gunzTarPerm extractEntry package.json
+185 silly gunzTarPerm extractEntry .npmignore
+186 silly gunzTarPerm extractEntry README.md
+187 silly gunzTarPerm extractEntry cli.js
+188 silly gunzTarPerm extractEntry jsdoc.js
+189 silly gunzTarPerm extractEntry changes.md
+190 silly gunzTarPerm extractEntry CONTRIBUTING.md
+191 silly gunzTarPerm extractEntry Apache_License_2.0.txt
+192 silly gunzTarPerm extractEntry LICENSE.md
+193 silly gunzTarPerm extractEntry lib/jsdoc/augment.js
+194 silly gunzTarPerm extractEntry lib/jsdoc/fs.js
+195 silly gunzTarPerm extractEntry lib/jsdoc/name.js
+196 silly gunzTarPerm extractEntry lib/jsdoc/tutorial.js
+197 silly gunzTarPerm extractEntry lib/jsdoc/doclet.js
+198 silly gunzTarPerm extractEntry lib/jsdoc/path.js
+199 silly gunzTarPerm extractEntry lib/jsdoc/borrow.js
+200 silly gunzTarPerm extractEntry lib/jsdoc/readme.js
+201 silly gunzTarPerm extractEntry lib/jsdoc/schema.js
+202 silly gunzTarPerm extractEntry lib/jsdoc/template.js
+203 silly gunzTarPerm extractEntry lib/jsdoc/config.js
+204 silly gunzTarPerm extractEntry lib/jsdoc/tag.js
+205 silly gunzTarPerm extractEntry lib/jsdoc/package.js
+206 silly gunzTarPerm extractEntry lib/jsdoc/plugins.js
+207 silly gunzTarPerm extractEntry lib/jsdoc/tag/dictionary.js
+208 silly gunzTarPerm extractEntry lib/jsdoc/tag/inline.js
+209 silly gunzTarPerm extractEntry lib/jsdoc/tag/type.js
+210 silly gunzTarPerm extractEntry lib/jsdoc/tag/validator.js
+211 silly gunzTarPerm extractEntry lib/jsdoc/tag/dictionary/definitions.js
+212 silly gunzTarPerm extractEntry lib/jsdoc/src/astbuilder.js
+213 silly gunzTarPerm extractEntry lib/jsdoc/src/astnode.js
+214 silly gunzTarPerm extractEntry lib/jsdoc/src/filter.js
+215 silly gunzTarPerm extractEntry lib/jsdoc/src/handlers.js
+216 silly gunzTarPerm extractEntry lib/jsdoc/src/parser.js
+217 silly gunzTarPerm extractEntry lib/jsdoc/src/scanner.js
+218 silly gunzTarPerm extractEntry lib/jsdoc/src/syntax.js
+219 silly gunzTarPerm extractEntry lib/jsdoc/src/visitor.js
+220 silly gunzTarPerm extractEntry lib/jsdoc/src/walker.js
+221 silly gunzTarPerm extractEntry lib/jsdoc/tutorial/resolver.js
+222 silly gunzTarPerm extractEntry lib/jsdoc/opts/argparser.js
+223 silly gunzTarPerm extractEntry lib/jsdoc/opts/args.js
+224 silly gunzTarPerm extractEntry lib/jsdoc/util/doop.js
+225 silly gunzTarPerm extractEntry lib/jsdoc/util/dumper.js
+226 silly gunzTarPerm extractEntry lib/jsdoc/util/error.js
+227 silly gunzTarPerm extractEntry lib/jsdoc/util/logger.js
+228 silly gunzTarPerm extractEntry lib/jsdoc/util/markdown.js
+229 silly gunzTarPerm extractEntry lib/jsdoc/util/runtime.js
+230 silly gunzTarPerm extractEntry lib/jsdoc/util/templateHelper.js
+231 silly gunzTarPerm extractEntry node/fs.js
+232 silly gunzTarPerm extractEntry templates/README.md
+233 silly gunzTarPerm extractEntry templates/default/README.md
+234 silly gunzTarPerm extractEntry templates/default/publish.js
+235 silly gunzTarPerm extractEntry templates/default/static/fonts/OpenSans-Light-webfont.eot
+236 silly gunzTarPerm extractEntry templates/default/static/fonts/OpenSans-Bold-webfont.eot
+237 silly gunzTarPerm extractEntry templates/default/static/fonts/OpenSans-Bold-webfont.woff
+238 silly gunzTarPerm extractEntry templates/default/static/fonts/OpenSans-BoldItalic-webfont.eot
+239 silly gunzTarPerm extractEntry templates/default/static/fonts/OpenSans-BoldItalic-webfont.svg
+240 silly gunzTarPerm extractEntry templates/default/static/fonts/OpenSans-BoldItalic-webfont.woff
+241 silly gunzTarPerm extractEntry templates/default/static/fonts/OpenSans-Italic-webfont.eot
+242 silly gunzTarPerm extractEntry templates/default/static/fonts/OpenSans-Italic-webfont.svg
+243 silly gunzTarPerm extractEntry templates/default/static/fonts/OpenSans-Italic-webfont.woff
+244 silly gunzTarPerm extractEntry templates/default/static/fonts/OpenSans-Bold-webfont.svg
+245 silly gunzTarPerm extractEntry templates/default/static/fonts/OpenSans-Light-webfont.svg
+246 silly gunzTarPerm extractEntry templates/default/static/fonts/OpenSans-Light-webfont.woff
+247 silly gunzTarPerm extractEntry templates/default/static/fonts/OpenSans-LightItalic-webfont.eot
+248 silly gunzTarPerm extractEntry templates/default/static/fonts/OpenSans-LightItalic-webfont.svg
+249 silly gunzTarPerm extractEntry templates/default/static/fonts/OpenSans-LightItalic-webfont.woff
+250 silly gunzTarPerm extractEntry templates/default/static/fonts/OpenSans-Regular-webfont.eot
+251 silly gunzTarPerm extractEntry templates/default/static/fonts/OpenSans-Regular-webfont.svg
+252 silly gunzTarPerm extractEntry templates/default/static/fonts/OpenSans-Regular-webfont.woff
+253 silly gunzTarPerm extractEntry templates/default/static/scripts/linenumber.js
+254 silly gunzTarPerm extractEntry templates/default/static/scripts/prettify/lang-css.js
+255 silly gunzTarPerm extractEntry templates/default/static/scripts/prettify/prettify.js
+256 silly gunzTarPerm extractEntry templates/default/static/scripts/prettify/Apache-License-2.0.txt
+257 silly gunzTarPerm extractEntry templates/default/static/styles/jsdoc-default.css
+258 silly gunzTarPerm extractEntry templates/default/static/styles/prettify-jsdoc.css
+259 silly gunzTarPerm extractEntry templates/default/static/styles/prettify-tomorrow.css
+260 silly gunzTarPerm extractEntry templates/default/tmpl/members.tmpl
+261 silly gunzTarPerm extractEntry templates/default/tmpl/augments.tmpl
+262 silly gunzTarPerm extractEntry templates/default/tmpl/details.tmpl
+263 silly gunzTarPerm extractEntry templates/default/tmpl/example.tmpl
+264 silly gunzTarPerm extractEntry templates/default/tmpl/examples.tmpl
+265 silly gunzTarPerm extractEntry templates/default/tmpl/exceptions.tmpl
+266 silly gunzTarPerm extractEntry templates/default/tmpl/layout.tmpl
+267 silly gunzTarPerm extractEntry templates/default/tmpl/mainpage.tmpl
+268 silly gunzTarPerm extractEntry templates/default/tmpl/container.tmpl
+269 silly gunzTarPerm extractEntry templates/default/tmpl/method.tmpl
+270 silly gunzTarPerm extractEntry templates/default/tmpl/params.tmpl
+271 silly gunzTarPerm extractEntry templates/default/tmpl/properties.tmpl
+272 silly gunzTarPerm extractEntry templates/default/tmpl/returns.tmpl
+273 silly gunzTarPerm extractEntry templates/default/tmpl/source.tmpl
+274 silly gunzTarPerm extractEntry templates/default/tmpl/tutorial.tmpl
+275 silly gunzTarPerm extractEntry templates/default/tmpl/type.tmpl
+276 silly gunzTarPerm extractEntry templates/haruki/README.md
+277 silly gunzTarPerm extractEntry templates/haruki/publish.js
+278 silly gunzTarPerm extractEntry plugins/commentConvert.js
+279 silly gunzTarPerm extractEntry plugins/escapeHtml.js
+280 silly gunzTarPerm extractEntry plugins/eventDumper.js
+281 silly gunzTarPerm extractEntry plugins/markdown.js
+282 silly gunzTarPerm extractEntry plugins/overloadHelper.js
+283 silly gunzTarPerm extractEntry plugins/commentsOnly.js
+284 silly gunzTarPerm extractEntry plugins/railsTemplate.js
+285 silly gunzTarPerm extractEntry plugins/shout.js
+286 silly gunzTarPerm extractEntry plugins/sourcetag.js
+287 silly gunzTarPerm extractEntry plugins/summarize.js
+288 silly gunzTarPerm extractEntry plugins/partial.js
+289 silly gunzTarPerm extractEntry plugins/test/fixtures/markdown.js
+290 silly gunzTarPerm extractEntry plugins/test/fixtures/overloadHelper.js
+291 silly gunzTarPerm extractEntry plugins/test/fixtures/railsTemplate.js.erb
+292 silly gunzTarPerm extractEntry plugins/test/specs/commentConvert.js
+293 silly gunzTarPerm extractEntry plugins/test/specs/escapeHtml.js
+294 silly gunzTarPerm extractEntry plugins/test/specs/markdown.js
+295 silly gunzTarPerm extractEntry plugins/test/specs/overloadHelper.js
+296 silly gunzTarPerm extractEntry plugins/test/specs/railsTemplate.js
+297 silly gunzTarPerm extractEntry plugins/test/specs/shout.js
+298 silly gunzTarPerm extractEntry plugins/test/specs/sourcetag.js
+299 silly gunzTarPerm extractEntry plugins/test/specs/summarize.js
+300 silly gunzTarPerm extractEntry conf.json.EXAMPLE
+301 silly lockFile 0a19ca88--npm-jsdoc-3-3-0-alpha13-package tar:///root/.npm/jsdoc/3.3.0-alpha13/package
+302 silly lockFile 0a19ca88--npm-jsdoc-3-3-0-alpha13-package tar:///root/.npm/jsdoc/3.3.0-alpha13/package
+303 silly lockFile 3520d862--jsdoc-3-3-0-alpha13-package-tgz tar:///root/.npm/jsdoc/3.3.0-alpha13/package.tgz
+304 silly lockFile 3520d862--jsdoc-3-3-0-alpha13-package-tgz tar:///root/.npm/jsdoc/3.3.0-alpha13/package.tgz
+305 verbose chmod /root/.npm/jsdoc/3.3.0-alpha13/package.tgz 644
+306 verbose chown /root/.npm/jsdoc/3.3.0-alpha13/package.tgz [ 1000, 1000 ]
+307 silly lockFile c46955aa-rg-jsdoc-jsdoc-3-3-0-alpha13-tgz https://registry.npmjs.org/jsdoc/-/jsdoc-3.3.0-alpha13.tgz
+308 silly lockFile c46955aa-rg-jsdoc-jsdoc-3-3-0-alpha13-tgz https://registry.npmjs.org/jsdoc/-/jsdoc-3.3.0-alpha13.tgz
+309 silly lockFile af369b9e-jsdoc-3-3-0-alpha13 jsdoc@3.3.0-alpha13
+310 silly lockFile af369b9e-jsdoc-3-3-0-alpha13 jsdoc@3.3.0-alpha13
+311 silly lockFile 01a8fe6d-jsdoc-3-3-0 jsdoc@<=3.3.0
+312 silly lockFile 01a8fe6d-jsdoc-3-3-0 jsdoc@<=3.3.0
+313 silly resolved [ { name: 'jsdoc',
+313 silly resolved     version: '3.3.0-alpha13',
+313 silly resolved     revision: '1419376892674',
+313 silly resolved     description: 'An API documentation generator for JavaScript.',
+313 silly resolved     keywords: [ 'documentation', 'javascript' ],
+313 silly resolved     license: 'Apache-2.0',
+313 silly resolved     repository: { type: 'git', url: 'https://github.com/jsdoc3/jsdoc' },
+313 silly resolved     dependencies:
+313 silly resolved      { async: '~0.1.22',
+313 silly resolved        catharsis: '~0.8.5',
+313 silly resolved        'escape-string-regexp': '~1.0.0',
+313 silly resolved        esprima: 'https://github.com/ariya/esprima/tarball/49a2eccb243f29bd653b11e9419241a9d726af7c',
+313 silly resolved        js2xmlparser: '~0.1.0',
+313 silly resolved        marked: '~0.3.1',
+313 silly resolved        requizzle: '~0.2.0',
+313 silly resolved        'strip-json-comments': '~0.1.3',
+313 silly resolved        taffydb: 'https://github.com/hegemonic/taffydb/tarball/master',
+313 silly resolved        underscore: '~1.6.0',
+313 silly resolved        wrench: '~1.3.9' },
+313 silly resolved     devDependencies:
+313 silly resolved      { eslint: '~0.10.2',
+313 silly resolved        gulp: '~3.8.5',
+313 silly resolved        'gulp-eslint': '~0.1.7',
+313 silly resolved        'gulp-json-editor': '~2.0.2',
+313 silly resolved        istanbul: '~0.2.1',
+313 silly resolved        tv4: 'https://github.com/hegemonic/tv4/tarball/own-properties' },
+313 silly resolved     engines: { node: '>=0.10' },
+313 silly resolved     scripts: { test: 'gulp test' },
+313 silly resolved     bin: { jsdoc: './jsdoc.js' },
+313 silly resolved     bugs: { url: 'https://github.com/jsdoc3/jsdoc/issues' },
+313 silly resolved     author: { name: 'Michael Mathews', email: 'micmath@gmail.com' },
+313 silly resolved     contributors: [ [Object] ],
+313 silly resolved     maintainers: { name: 'Jeff Williams', email: 'jeffrey.l.williams@gmail.com' },
+313 silly resolved     readme: 'JSDoc 3\n=======\n[![Build Status](https://img.shields.io/travis/jsdoc3/jsdoc.svg)](http://travis-ci.org/jsdoc3/jsdoc)\n\nAn API documentation generator for JavaScript.\n\nWant to contribute to JSDoc? Please read `CONTRIBUTING.md`.\n\nInstallation and Usage\n----------------------\n\nYou can run JSDoc on either Node.js or Mozilla Rhino.\n\n### Node.js\n\nNative support for Node.js is available in JSDoc 3.3.0 and later. JSDoc\nsupports Node.js 0.10 and later.\n\n#### Installing JSDoc for Node.js\n\nYou can install JSDoc in your project\'s `node_modules` folder, or you can\ninstall it globally.\n\nTo install the latest alpha version:\n\n    npm install jsdoc@"<=3.3.0"\n\nTo install the latest development version:\n\n    npm install git+https://github.com/jsdoc3/jsdoc.git\n\n#### Running JSDoc with Node.js\n\nIf you installed JSDoc locally, the JSDoc command-line tool is available in\n`./node_modules/.bin`. To generate documentation for the file\n`yourJavaScriptFile.js`:\n\n    ./node_modules/.bin/jsdoc yourJavaScriptFile.js\n\nOr if you installed JSDoc globally, simply run the `jsdoc` command:\n\n    jsdoc yourJavaScriptFile.js\n\nBy default, the generated documentation is saved in a directory named `out`. You\ncan use the `--destination` (`-d`) option to specify another directory.\n\nRun `jsdoc --help` for a complete list of command-line options.\n\n### Mozilla Rhino\n\nAll versions of JSDoc 3 run on a customized version of Mozilla Rhino, which\nrequires Java. You can run JSDoc 3 on Java 1.6 and later.\n\n#### Installing JSDoc for Mozilla Rhino\n\nTo install JSDoc, download a .zip file for the\n[latest development version](https://github.com/jsdoc3/jsdoc/archive/master.zip)\nor a [previous release](https://github.com/jsdoc3/jsdoc/tags).\n\nYou can also use git to clone the\n[JSDoc repository](https://github.com/jsdoc3/jsdoc):\n\n    git clone git+https://github.com/jsdoc3/jsdoc.git\n\nThe JSDoc repository includes a\n[customized version of Mozilla Rhino](https://github.com/jsdoc3/rhino). Make\nsure your Java classpath does not include any other versions of Rhino. (On OS X,\nyou may need to remove the file `~/Library/Java/Extensions/js.jar`.)\n\n**Note**: In JSDoc 3.3.0 and later, if you need to run JSDoc on Mozilla Rhino,\ndo not install JSDoc with npm. Use one of the methods described above.\n\n#### Running JSDoc with Mozilla Rhino\n\nOn OS X, Linux, and other POSIX systems, to generate documentation for the file\n`yourJavaScriptFile.js`:\n\n    ./jsdoc yourJavaScriptFile.js\n\nOr on Windows:\n\n    jsdoc yourJavaScriptFile.js\n\nBy default, the generated documentation is saved in a directory named `out`. You\ncan use the `--destination` (`-d`) option to specify another directory.\n\nRun `jsdoc --help` for a complete list of command-line options.\n\n\nTemplates and Build Tools\n-------------------------\n\nThe JSDoc community has created numerous templates and other tools to help you\ngenerate and customize your documentation. Here are just a few:\n\n### Templates\n\n+ [jaguarjs-jsdoc](https://github.com/davidshimjs/jaguarjs-jsdoc)\n  ([example](http://davidshimjs.github.io/jaguarjs/doc))\n+ [DocStrap](https://github.com/terryweiss/docstrap)\n+ [jsdoc3Template](https://github.com/DBCDK/jsdoc3Template)\n  ([example](https://github.com/danyg/jsdoc3Template/wiki#wiki-screenshots))\n\n### Build Tools\n\n+ [JSDoc Grunt plugin](https://github.com/krampstudio/grunt-jsdoc)\n+ [JSDoc ant task](https://github.com/jannon/jsdoc3-ant-task)\n\n### Generating Typeface Fonts\n\nJSDoc 3 uses the [OpenSans](https://www.google.com/fonts/specimen/Open+Sans) typeface, the fonts for which can be re-generated as follows:\n\n1. Open the [OpenSans page at Font Squirrel](<http://www.fontsquirrel.com/fonts/open-sans>).\n2. Click on the \'Webfont Kit\' tab.\n3. Either leave the subset drop-down as \'Western Latin (Default)\', or if we decide we need more glyphs than change it to \'No Subsetting\'.\n4. Click the \'DOWNLOAD @FONT-FACE KIT\' button.\n5. For each typeface variant we plan to use, copy the \'eot\', \'svg\' and \'woff\' files into the \'templates/default/static/fonts\' directory.\n\nFor More Information\n--------------------\n\n+ Documentation is available at [Use JSDoc](http://usejsdoc.org).\n+ Contribute to the docs at [jsdoc3/jsdoc3.github.com](https://github.com/jsdoc3/jsdoc3.github.com).\n+ Ask for help on the [JSDoc Users mailing list](http://groups.google.com/group/jsdoc-users).\n+ Post questions tagged `jsdoc` to [Stack\nOverflow](http://stackoverflow.com/questions/tagged/jsdoc).\n\nLicense\n-------\n\nJSDoc 3 is copyright (c) 2011-2014 Michael Mathews <micmath@gmail.com> and the\n[contributors to JSDoc](https://github.com/jsdoc3/jsdoc/graphs/contributors).\n\nJSDoc 3 is free software, licensed under the Apache License, Version 2.0. See\nthe file `LICENSE.md` in this distribution for more details.\n',
+313 silly resolved     readmeFilename: 'README.md',
+313 silly resolved     _id: 'jsdoc@3.3.0-alpha13',
+313 silly resolved     dist: { shasum: '2607ac86fb7a2ceff61d327022848552a29378c3' },
+313 silly resolved     _from: 'jsdoc@<=3.3.0',
+313 silly resolved     _resolved: 'https://registry.npmjs.org/jsdoc/-/jsdoc-3.3.0-alpha13.tgz' } ]
+314 info install jsdoc@3.3.0-alpha13 into /home/dash/git/dash.js-B1
+315 info installOne jsdoc@3.3.0-alpha13
+316 info /home/dash/git/dash.js-B1/node_modules/jsdoc unbuild
+317 info preuninstall jsdoc@3.3.0-alpha11
+318 info uninstall jsdoc@3.3.0-alpha11
+319 verbose true,/home/dash/git/dash.js-B1/node_modules,/home/dash/git/dash.js-B1/node_modules unbuild jsdoc@3.3.0-alpha11
+320 verbose /home/dash/git/dash.js-B1/node_modules/.bin,[object Object] binRoot
+321 info /home/dash/git/dash.js-B1/node_modules/jsdoc unbuild
+322 info preuninstall jsdoc@3.3.0-alpha11
+323 info uninstall jsdoc@3.3.0-alpha11
+324 verbose true,/home/dash/git/dash.js-B1/node_modules,/home/dash/git/dash.js-B1/node_modules unbuild jsdoc@3.3.0-alpha11
+325 verbose /home/dash/git/dash.js-B1/node_modules/.bin,[object Object] binRoot
+326 info postuninstall jsdoc@3.3.0-alpha11
+327 error Refusing to delete: /home/dash/git/dash.js-B1/node_modules/.bin/jsdoc not in /home/dash/git/dash.js-B1/node_modules/jsdoc
+File exists: /home/dash/git/dash.js-B1/node_modules/.bin/jsdoc
+Move it away, and try again.
+328 error System Linux 3.13.0-39-generic
+329 error command "/usr/bin/nodejs" "/usr/bin/npm" "install" "jsdoc@<=3.3.0"
+330 error cwd /home/dash/git/dash.js-B1
+331 error node -v v0.10.25
+332 error npm -v 1.3.10
+333 error path /home/dash/git/dash.js-B1/node_modules/.bin/jsdoc
+334 error code EEXIST
+335 verbose exit [ 1, true ]
