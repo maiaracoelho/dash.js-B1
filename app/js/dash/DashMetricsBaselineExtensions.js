@@ -127,7 +127,8 @@ Dash.dependencies.DashMetricsBaselineExtensions = function () {
         }
 		
 		averageThrough = sumThrough/numSegs;
-    	this.debug.log("getAverageThrough3Segs");
+    	this.debug.log("sumThrough: " + sumThrough);
+    	this.debug.log("numSegs: " + numSegs);
 
         return averageThrough;
     }, 

@@ -14,7 +14,7 @@ MediaPlayer.rules.RomeroMeanRule = function () {
 			bandwidth /= 1000; //bit/ms
 			
 			downloadTime = throughList[i].finishTime.getTime() - throughList[i].responseTime.getTime();
-			segDuration = throughList[i].duration/1000; 
+			segDuration = throughList[i].duration * 1000; 
 			
 			through = (bandwidth * segDuration)/downloadTime; 
 			
@@ -97,7 +97,8 @@ MediaPlayer.rules.RomeroMeanRule = function () {
            		averageThroughput = self.metricsBaselineExt.getAverageThrough3Segs(numSegs, metricsBaseline);	
            		averageThroughput = averageThroughput * SENSIVITY;
            		
-				self.debug.log("Baseline - AverageThroughput: " + averageThroughput + "bps");
+				self.debug.log("Baseline - AverageThroughput: " + averageThroughput);
+				self.debug.log("Baseline - currentBandwidthMs: " + currentBandwidthMs + "bps");
 					                	            
 				if (averageThroughput > currentBandwidthMs) {
 					while (representationCur < max){
