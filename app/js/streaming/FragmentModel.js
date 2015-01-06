@@ -49,6 +49,8 @@ MediaPlayer.dependencies.FragmentModel = function () {
 
             self.fragmentLoader.load(request).then(onSuccess.bind(context, request),
                 onError.bind(context, request));
+            
+
         },
 
         sortRequestsByProperty = function(requestsArray, sortProp) {

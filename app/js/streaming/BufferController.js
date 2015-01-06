@@ -802,6 +802,7 @@ MediaPlayer.dependencies.BufferController = function () {
 
         signalStreamComplete = function (request) {
             this.debug.log(type + " Stream is complete.");
+            this.debug.log(" Inserir Metrics");
             clearPlayListTraceMetrics(new Date(), MediaPlayer.vo.metrics.PlayList.Trace.END_OF_CONTENT_STOP_REASON);
             doStop.call(this);
             deferredStreamComplete.resolve(request);

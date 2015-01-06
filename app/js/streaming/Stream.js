@@ -679,8 +679,10 @@ MediaPlayer.dependencies.Stream = function () {
                             play.call(self);
                         }
                     }
+
                 }
             );
+
         },
 
         currentTimeChanged = function () {

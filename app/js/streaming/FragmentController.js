@@ -47,6 +47,7 @@ MediaPlayer.dependencies.FragmentController = function () {
             for (var i = 0; i < fragmentModels.length; i++) {
                 fragmentModels[i].executeCurrentRequest();
             }
+
         };
 
     return {
