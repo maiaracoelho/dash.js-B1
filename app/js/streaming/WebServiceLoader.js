@@ -6,21 +6,16 @@ MediaPlayer.dependencies.WebServiceLoader = function () {
             var xmlhttp = new XMLHttpRequest(),
             	bufferLevelMetrics = [],
             	trhoughSegMetrics = [],
-            	delayMetrics = [],
                 self = this;
             	
             	self.debug.log("Chegou no WebService");
             	
             	bufferLevelMetrics = metrics.BufferLevel;
             	trhoughSegMetrics = metricsBaseline.ThroughSeg;
-            	delayMetrics = metricsBaseline.Delay;
             	
-                self.debug.log("Delay: "+ delayMetrics[0].t);
                 self.debug.log("BufferLevel: "+ bufferLevelMetrics[0].level);
 
-            	
-            	
-                xmlhttp.open("POST", "http://localhost/webservice/webservice.php/capture");
+                xmlhttp.open("POST", "http://localhost/webservice/webservice.php");
                 
 /*
                 req.setRequestHeader("Cache-Control", "no-cache");
@@ -30,9 +25,8 @@ MediaPlayer.dependencies.WebServiceLoader = function () {
 
                 xmlhttp.setRequestHeader('Content-Type', 'application/json');
                 
-                var arqJson = JSON.stringify(bufferLevelMetrics);
-                	arqJson += " " + JSON.stringify(trhoughSegMetrics);
-                	arqJson += " " + JSON.stringify(delayMetrics);
+                var arqJson = '{ "bufferLevelMetrics": ' +JSON.stringify(bufferLevelMetrics);
+                	arqJson += ', "throughSegMetrics": '+ JSON.stringify(trhoughSegMetrics)+" }";
                 
                 self.debug.log(arqJson);
                 

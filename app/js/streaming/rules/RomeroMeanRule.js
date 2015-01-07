@@ -81,6 +81,8 @@ MediaPlayer.rules.RomeroMeanRule = function () {
 
             deferred = Q.defer();
             
+            insertThroughputs.call(self, metricsBaseline.ThroughSeg, availableRepresentations);
+            
         	downloadTime = (lastRequest.tfinish.getTime() - lastRequest.tresponse.getTime())/1000;
 
             max = self.manifestExt.getRepresentationCount1(data);
@@ -89,8 +91,6 @@ MediaPlayer.rules.RomeroMeanRule = function () {
         	representation2 = self.manifestExt.getRepresentationFor1(current, data);
         	currentBandwidth = self.manifestExt.getBandwidth1(representation2);
         	currentBandwidthMs = currentBandwidth/1000;
-
-        	insertThroughputs.call(self, metricsBaseline.ThroughSeg, availableRepresentations);
 
            	if (metricsBaseline.ThroughSeg.length >= numSegs){
 

@@ -267,11 +267,15 @@ MediaPlayer.dependencies.BufferController = function () {
                                                             isBufferingCompleted = true;
                                     						
                                     						 /**Chamar o webservice em PHP para o armazenamento dos dados**/
-                                    			            var metrics = self.metricsModel.getMetricsFor(type);                             			                        	   self.debug.log("metricas verificadas");
-                                    			            var metricsBaseline = self.metricsBaselinesModel.getMetricsBaselineFor(type);                             			                        	   self.debug.log("metricas verificadas");
+                                    			            var metrics = self.metricsModel.getMetricsFor(type);
+                                    			            
+                                    			            var metricsBaseline = self.metricsBaselinesModel.getMetricsBaselineFor(type);                             			                        	 
                                     			            
                                     			            if(metrics != null && metricsBaseline != null){
-                   			                        		 	self.webServiceClient.load(metrics, metricsBaseline); 
+                                    			            	if (metrics.BufferLevel != null && metricsBaseline.ThroughSeg != null){
+                                            			            self.debug.log("metrics.BufferLevel.length: " + metrics.BufferLevel.length);
+                       			                        		 	self.webServiceClient.load(metrics, metricsBaseline); 
+                                    			            	}
                    			                        	 	}
                                     			            
                                                             if (stalled) {

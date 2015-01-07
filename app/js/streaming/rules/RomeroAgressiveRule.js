@@ -4,11 +4,33 @@
 
 MediaPlayer.rules.RomeroAgressiveRule = function () {
     "use strict";
+    var insertThroughputs = function (throughList, availableRepresentations) {
+		var self = this, representation, bandwidth, quality, downloadTime, segDuration, through;
+		
+		for(var i = 0; i < throughList.length; i++){
+			quality = throughList[i].quality;
+			representation = availableRepresentations[quality];
+			bandwidth = self.metricsExt.getBandwidthForRepresentation(representation.id);
+			bandwidth /= 1000; //bit/ms
+			
+			downloadTime = throughList[i].finishTime.getTime() - throughList[i].responseTime.getTime();
+			segDuration = throughList[i].duration * 1000; 
+			
+			through = (bandwidth * segDuration)/downloadTime; 
+			
+			self.debug.log("bandwidth: " + bandwidth);
+			self.debug.log("through: " + through);
+			
+    		self.metricsBaselinesModel.updateThroughputSeg(throughList[i], bandwidth, through);
 
+		}
+    };
+    
     return {
         debug: undefined,
         manifestExt: undefined,
         metricsExt: undefined,
+        metricsBaselinesModel: undefined,
         
         /**
          * @param {current} current - Índice da representação corrente
@@ -17,11 +39,10 @@ MediaPlayer.rules.RomeroAgressiveRule = function () {
          * @memberof RomeroConservativeRule#
          */
         
-        checkIndex: function (current, metrics, data) {
+        checkIndex: function (current, metrics, data, metricsBaseline, availableRepresentations) {
             var self = this,
-            	lastRequest = self.metricsExt.getCurrentHttpRequest(metrics),
+            	lastRequest = self.metricsExt.getLastHttpRequest(metrics),
                 downloadTime,
-                throughput,
                 newDownloadRatio,
                 deferred,
                 representation1,
@@ -37,46 +58,44 @@ MediaPlayer.rules.RomeroAgressiveRule = function () {
         	//self.debug.log("Tamanho metrics HttpList: " + metrics.HttpList.length);
             
             if (!metrics) {
-                //self.debug.log("No metrics, bailing.");
-                return Q.when(new MediaPlayer.rules.SwitchRequest());
-            }
+             	//self.debug.log("No metrics, bailing.");
+             	return Q.when(new MediaPlayer.rules.SwitchRequest());
+             }
+             
+             if (!metricsBaseline) {
+             	//self.debug.log("No metrics Baseline, bailing.");
+             	return Q.when(new MediaPlayer.rules.SwitchRequest());
+             }
                         
-            if (lastRequest === null) {
-                //self.debug.log("No requests made for this stream yet, bailing.");
-                return Q.when(new MediaPlayer.rules.SwitchRequest());
-            }
-
-            if (lastRequest.mediaduration === null ||
-                lastRequest.mediaduration === undefined ||
-                lastRequest.mediaduration <= 0 ||
-                isNaN(lastRequest.mediaduration)) {
-                //self.debug.log("Don't know the duration of the last media fragment, bailing.");
-                return Q.when(new MediaPlayer.rules.SwitchRequest());
-            }
+             if (lastRequest == null) {
+                 //self.debug.log("No requests made for this stream yet, bailing.");
+                 return Q.when(new MediaPlayer.rules.SwitchRequest());
+             }
           
             deferred = Q.defer();
+            
+            insertThroughputs.call(self, metricsBaseline.ThroughSeg, availableRepresentations);
 
             downloadTime = (lastRequest.tfinish.getTime() - lastRequest.tresponse.getTime())/1000;
-            throughput = lastRequest.mediaduration/ downloadTime; 
             
+            max = self.manifestExt.getRepresentationCount1(data);
+        	max -= 1;
+        	representation2 = self.manifestExt.getRepresentationFor1(current, data);
+        	currentBandwidth = self.manifestExt.getBandwidth1(representation2);
+			//self.debug.log("currentBandwidth: " + currentBandwidth + "bps");
+        	           
+            newDownloadRatio = (currentBandwidth * lastRequest.mediaduration)/downloadTime ; 	//verificar valores
+
             //self.debug.log("lastRequest Type: " + lastRequest.stream );
             //self.debug.log("lastRequest.tfinish: " + lastRequest.tfinish);
             //self.debug.log("downloadTime: " + downloadTime + "s");
             //self.debug.log("lastRequest.mediaduration: " + lastRequest.mediaduration + "s");
 
-            if (isNaN(throughput)) {
-                self.debug.log("Invalid throughput, bailing.");
-                deferred.resolve(new MediaPlayer.rules.SwitchRequest());
+            if (isNaN(newDownloadRatio)) {
+                self.debug.log("Invalid newDownloadRatio, bailing.");
+                deferred.resolve(new MediaPlayer.rules.SwitchRequest());//current?
             } else {
-            	max = self.manifestExt.getRepresentationCount1(data);
-            	max -= 1;
-            	representation2 = self.manifestExt.getRepresentationFor1(current, data);
-            	currentBandwidth = self.manifestExt.getBandwidth1(representation2);
-				//self.debug.log("currentBandwidth: " + currentBandwidth + "bps");
-	
-				newDownloadRatio = throughput * currentBandwidth;
-				//self.debug.log("newDownloadRatio: " + newDownloadRatio + "bps");
-					                	            
+            	
 				if (newDownloadRatio > currentBandwidth) {
 					while (representationCur < max){
 						representation3 = self.manifestExt.getRepresentationFor1(representationCur + 1, data);
