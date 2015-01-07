@@ -2,17 +2,25 @@
 MediaPlayer.dependencies.WebServiceLoader = function () {
     "use strict";
 
-    var doLoad = function () {
+    var doLoad = function (metrics, metricsBaseline) {
             var xmlhttp = new XMLHttpRequest(),
-            	bufferLevelMetrics = null,
-            	trhoughSegMetrics = null,
+            	bufferLevelMetrics = [],
+            	trhoughSegMetrics = [],
+            	delayMetrics = [],
                 self = this;
+            	
+            	self.debug.log("Chegou no WebService");
+            	
+            	bufferLevelMetrics = metrics.BufferLevel;
+            	trhoughSegMetrics = metricsBaseline.ThroughSeg;
+            	delayMetrics = metricsBaseline.Delay;
+            	
+                self.debug.log("Delay: "+ delayMetrics[0].t);
+                self.debug.log("BufferLevel: "+ bufferLevelMetrics[0].level);
 
-            	bufferLevelMetrics = self.metricsBaselineExt.getThroughSegs();
-            	trhoughSegMetrics = self.metricsExt.getBufferLevels();
             	
             	
-                xmlhttp.open("GET", "http://localhost/webservice/webservice.php", true);
+                xmlhttp.open("POST", "http://localhost/webservice/webservice.php/capture");
                 
 /*
                 req.setRequestHeader("Cache-Control", "no-cache");
@@ -21,9 +29,14 @@ MediaPlayer.dependencies.WebServiceLoader = function () {
 */
 
                 xmlhttp.setRequestHeader('Content-Type', 'application/json');
-
-                xmlhttp.send(JSON.stringify(bufferLevelMetrics););
-                xmlhttp.send(JSON.stringify(trhoughSegMetrics););
+                
+                var arqJson = JSON.stringify(bufferLevelMetrics);
+                	arqJson += " " + JSON.stringify(trhoughSegMetrics);
+                	arqJson += " " + JSON.stringify(delayMetrics);
+                
+                self.debug.log(arqJson);
+                
+                xmlhttp.send(arqJson);
         }
         
     return {
@@ -33,10 +46,12 @@ MediaPlayer.dependencies.WebServiceLoader = function () {
         manifestExt: undefined,
         metricsBaselineExt: undefined,
 
-        load: function () {
+        load: function (metrics, metricsBaseline) {
+        	
+        	this.debug.log("Chegou no Load");
+            doLoad.call(this, metrics, metricsBaseline);
+        	this.debug.log("Saiu no Load");
 
-            doLoad.call();
-            
             return deferred.promise;
         }
        

@@ -265,6 +265,15 @@ MediaPlayer.dependencies.BufferController = function () {
                                                     function(lastRequest) {
                                                         if ((lastRequest.index - 1) === request.index && !isBufferingCompleted) {
                                                             isBufferingCompleted = true;
+                                    						
+                                    						 /**Chamar o webservice em PHP para o armazenamento dos dados**/
+                                    			            var metrics = self.metricsModel.getMetricsFor(type);                             			                        	   self.debug.log("metricas verificadas");
+                                    			            var metricsBaseline = self.metricsBaselinesModel.getMetricsBaselineFor(type);                             			                        	   self.debug.log("metricas verificadas");
+                                    			            
+                                    			            if(metrics != null && metricsBaseline != null){
+                   			                        		 	self.webServiceClient.load(metrics, metricsBaseline); 
+                   			                        	 	}
+                                    			            
                                                             if (stalled) {
                                                                 stalled = false;
                                                                 self.videoModel.stallStream(type, stalled);
@@ -802,7 +811,7 @@ MediaPlayer.dependencies.BufferController = function () {
 
         signalStreamComplete = function (request) {
             this.debug.log(type + " Stream is complete.");
-            this.debug.log(" Inserir Metrics");
+           
             clearPlayListTraceMetrics(new Date(), MediaPlayer.vo.metrics.PlayList.Trace.END_OF_CONTENT_STOP_REASON);
             doStop.call(this);
             deferredStreamComplete.resolve(request);
@@ -1126,6 +1135,7 @@ MediaPlayer.dependencies.BufferController = function () {
         };
         
     return {
+    	webServiceClient: undefined,
         videoModel: undefined,
         metricsModel: undefined,
         metricsBaselinesModel: undefined,

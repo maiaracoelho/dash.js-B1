@@ -66,7 +66,9 @@ MediaPlayer.models.MetricsBaselinesModel = function () {
             	metricsBaseline = this.system.getObject("metricsBaseline");
                 this.streamMetrics[type] = metricsBaseline;
             }
-
+            if (metricsBaseline != null){
+                this.debug.log("getMetricsBaselinesFor");
+            }
             return metricsBaseline;
         },
         
