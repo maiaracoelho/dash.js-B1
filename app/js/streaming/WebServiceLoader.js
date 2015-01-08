@@ -9,7 +9,7 @@ MediaPlayer.dependencies.WebServiceLoader = function () {
                 self = this;
             	
             	self.debug.log("Chegou no WebService");
-            	
+            
             	bufferLevelMetrics = metrics.BufferLevel;
             	trhoughSegMetrics = metricsBaseline.ThroughSeg;
             	
@@ -23,12 +23,27 @@ MediaPlayer.dependencies.WebServiceLoader = function () {
                 req.setRequestHeader("If-Modified-Since", "Sat, 1 Jan 2000 00:00:00 GMT");
 */
 
-                xmlhttp.setRequestHeader('Content-Type', 'application/json');
+                xmlhttp.setRequestHeader("Content-Type", "application/json");
                 
                 var arqJson = '{ "bufferLevelMetrics": ' +JSON.stringify(bufferLevelMetrics);
                 	arqJson += ', "throughSegMetrics": '+ JSON.stringify(trhoughSegMetrics)+" }";
                 
                 self.debug.log(arqJson);
+                
+                xmlhttp.onload = function () {
+                    if (xmlhttp.status < 200 || xmlhttp.status > 299)
+                    {
+                        self.debug.log("WEBSERVICE FAIL");
+
+                        return;
+                    }else{
+                        self.debug.log("WEBSERVICE SUCESS");
+
+                    	return;
+                    }
+                    
+
+                };
                 
                 xmlhttp.send(arqJson);
         }
@@ -42,7 +57,6 @@ MediaPlayer.dependencies.WebServiceLoader = function () {
 
         load: function (metrics, metricsBaseline) {
         	
-        	this.debug.log("Chegou no Load");
             doLoad.call(this, metrics, metricsBaseline);
         	this.debug.log("Saiu no Load");
 

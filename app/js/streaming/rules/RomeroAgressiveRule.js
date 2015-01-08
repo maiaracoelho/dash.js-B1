@@ -18,8 +18,8 @@ MediaPlayer.rules.RomeroAgressiveRule = function () {
 			
 			through = (bandwidth * segDuration)/downloadTime; 
 			
-			self.debug.log("bandwidth: " + bandwidth);
-			self.debug.log("through: " + through);
+			//self.debug.log("bandwidth: " + bandwidth);
+			//self.debug.log("through: " + through);
 			
     		self.metricsBaselinesModel.updateThroughputSeg(throughList[i], bandwidth, through);
 
