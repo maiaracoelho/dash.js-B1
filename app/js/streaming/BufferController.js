@@ -273,11 +273,10 @@ MediaPlayer.dependencies.BufferController = function () {
                                     			            
                                     			            if(metrics != null && metricsBaseline != null){
                                     			            	if (metrics.BufferLevel != null && metricsBaseline.ThroughSeg != null){
-                                            			            self.debug.log("metrics.BufferLevel.length: " + metrics.BufferLevel.length);
                        			                        		 	self.webServiceClient.load(metrics, metricsBaseline); 
                                     			            	}
                    			                        	 	}
-                                    			            
+                                    			            /**END**/
                                                             if (stalled) {
                                                                 stalled = false;
                                                                 self.videoModel.stallStream(type, stalled);

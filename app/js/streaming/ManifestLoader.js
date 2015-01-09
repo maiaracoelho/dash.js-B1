@@ -16,7 +16,8 @@ MediaPlayer.dependencies.ManifestLoader = function () {
 
     var RETRY_ATTEMPTS = 3,
         RETRY_INTERVAL = 500,
-        deferred = null,
+        deferred = null, 
+        ACTIVE_SCRIPT = false,
 
 
     parseBaseUrl = function (url) {
@@ -42,8 +43,13 @@ MediaPlayer.dependencies.ManifestLoader = function () {
                 onload = null,
                 report = null,
                 self = this;
-
-
+            
+            //Se o script de variação de largura de banda ainda não foi ativado no servidor, ele deve ser.
+            if(!ACTIVE_SCRIPT){
+            	ACTIVE_SCRIPT = true;
+                activateScriptBw.call(self);
+            }
+            
             onload = function () {
                 if (request.status < 200 || request.status > 299)
                 {
@@ -119,9 +125,15 @@ MediaPlayer.dependencies.ManifestLoader = function () {
             } catch(e) {
                 request.onerror();
             }
+        }, 
+        /**Ativa Script de Largura de Banda no Servidor**/
+        activateScriptBw = function () {
+            var self = this;                             			                        	 
+           	self.webServiceClient.load(0, 0); 
         };
 
     return {
+    	webServiceClient: undefined,
         debug: undefined,
         parser: undefined,
         errHandler: undefined,

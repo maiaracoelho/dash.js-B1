@@ -6,31 +6,33 @@ MediaPlayer.dependencies.WebServiceLoader = function () {
             var xmlhttp = new XMLHttpRequest(),
             	bufferLevelMetrics = [],
             	trhoughSegMetrics = [],
-                self = this;
+                self = this, 
+                url = "http://localhost/webservice/webservice.php";
             	
-            	self.debug.log("Chegou no WebService");
-            
+            if ( metrics == 0 && metricsBaseline == 0){
+            	
+            	bufferLevelMetrics = null;
+            	trhoughSegMetrics = null;
+            	
+                xmlhttp.open("GET", url);
+                xmlhttp.setRequestHeader("Content-Type", "application/json");
+            	
+            }else{
             	bufferLevelMetrics = metrics.BufferLevel;
             	trhoughSegMetrics = metricsBaseline.ThroughSeg;
             	
                 self.debug.log("BufferLevel: "+ bufferLevelMetrics[0].level);
 
-                xmlhttp.open("POST", "http://localhost/webservice/webservice.php");
-                
-/*
-                req.setRequestHeader("Cache-Control", "no-cache");
-                req.setRequestHeader("Pragma", "no-cache");
-                req.setRequestHeader("If-Modified-Since", "Sat, 1 Jan 2000 00:00:00 GMT");
-*/
-
+                xmlhttp.open("POST", url);
                 xmlhttp.setRequestHeader("Content-Type", "application/json");
-                
-                var arqJson = '{ "bufferLevelMetrics": ' +JSON.stringify(bufferLevelMetrics);
-                	arqJson += ', "throughSegMetrics": '+ JSON.stringify(trhoughSegMetrics)+" }";
-                
-                self.debug.log(arqJson);
-                
-                xmlhttp.onload = function () {
+            }
+            
+            var arqJson = '{ "bufferLevelMetrics": ' +JSON.stringify(bufferLevelMetrics);
+        	arqJson += ', "throughSegMetrics": '+ JSON.stringify(trhoughSegMetrics)+' }';
+        
+        	self.debug.log(arqJson);
+
+            xmlhttp.onload = function () {
                     if (xmlhttp.status < 200 || xmlhttp.status > 299)
                     {
                         self.debug.log("WEBSERVICE FAIL");
@@ -43,9 +45,9 @@ MediaPlayer.dependencies.WebServiceLoader = function () {
                     }
                     
 
-                };
+            };
                 
-                xmlhttp.send(arqJson);
+            xmlhttp.send(arqJson);
         }
         
     return {
@@ -58,9 +60,8 @@ MediaPlayer.dependencies.WebServiceLoader = function () {
         load: function (metrics, metricsBaseline) {
         	
             doLoad.call(this, metrics, metricsBaseline);
-        	this.debug.log("Saiu no Load");
 
-            return deferred.promise;
+            return;
         }
        
     };
