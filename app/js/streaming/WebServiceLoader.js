@@ -2,34 +2,45 @@
 MediaPlayer.dependencies.WebServiceLoader = function () {
     "use strict";
 
-    var doLoad = function (metrics, metricsBaseline) {
+    var bufferLevelMetrics = [],
+		trhoughSegMetrics = [],
+		arqJson = "",
+		runWebservice = 0,
+    
+    doLoad = function (metrics, metricsBaseline) {
             var xmlhttp = new XMLHttpRequest(),
-            	bufferLevelMetrics = [],
-            	trhoughSegMetrics = [],
                 self = this, 
                 url = "http://localhost/webservice/webservice.php";
-            	
+        		runWebservice++;
+
             if ( metrics == 0 && metricsBaseline == 0){
             	
             	bufferLevelMetrics = null;
             	trhoughSegMetrics = null;
-            	
+
                 xmlhttp.open("GET", url);
                 xmlhttp.setRequestHeader("Content-Type", "application/json");
             	
             }else{
+            
             	bufferLevelMetrics = metrics.BufferLevel;
             	trhoughSegMetrics = metricsBaseline.ThroughSeg;
             	
-                self.debug.log("BufferLevel: "+ bufferLevelMetrics[0].level);
-
+                self.debug.log("BufferLevel: "+ bufferLevelMetrics.length);
+                self.debug.log("trhoughSegMetrics: "+ trhoughSegMetrics.length);
+                
                 xmlhttp.open("POST", url);
                 xmlhttp.setRequestHeader("Content-Type", "application/json");
             }
             
-            var arqJson = '{ "bufferLevelMetrics": ' +JSON.stringify(bufferLevelMetrics);
-        	arqJson += ', "throughSegMetrics": '+ JSON.stringify(trhoughSegMetrics)+' }';
-        
+        	if(runWebservice == 2){
+                arqJson = "";
+            	return;
+            }
+        	
+        	arqJson = '{"bufferLevelMetrics":' +JSON.stringify(bufferLevelMetrics);
+        	arqJson += ', "throughSegMetrics":'+ JSON.stringify(trhoughSegMetrics)+'}';
+        	
         	self.debug.log(arqJson);
 
             xmlhttp.onload = function () {
