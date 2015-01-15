@@ -18,8 +18,8 @@ MediaPlayer.dependencies.WebServiceLoader = function () {
             	bufferLevelMetrics = null;
             	trhoughSegMetrics = null;
 
-                xmlhttp.open("GET", url);
-                xmlhttp.setRequestHeader("Content-Type", "application/json");
+                xmlhttp.open("GET", url, true);
+                xmlhttp.setRequestHeader("Content-Type", "application/json; charset=utf-8");
             	
             }else{
             
@@ -29,15 +29,10 @@ MediaPlayer.dependencies.WebServiceLoader = function () {
                 self.debug.log("BufferLevel: "+ bufferLevelMetrics.length);
                 self.debug.log("trhoughSegMetrics: "+ trhoughSegMetrics.length);
                 
-                xmlhttp.open("POST", url);
-                xmlhttp.setRequestHeader("Content-Type", "application/json");
+                xmlhttp.open("POST", url, true);
+                xmlhttp.setRequestHeader("Content-Type", "application/json; charset=utf-8");
             }
-            
-        	if(runWebservice == 2){
-                arqJson = "";
-            	return;
-            }
-        	
+        
         	arqJson = '{"bufferLevelMetrics":' +JSON.stringify(bufferLevelMetrics);
         	arqJson += ', "throughSegMetrics":'+ JSON.stringify(trhoughSegMetrics)+'}';
         	
@@ -67,6 +62,8 @@ MediaPlayer.dependencies.WebServiceLoader = function () {
         debug: undefined,
         manifestExt: undefined,
         metricsBaselineExt: undefined,
+        tokenAuthentication:undefined,
+
 
         load: function (metrics, metricsBaseline) {
         	
