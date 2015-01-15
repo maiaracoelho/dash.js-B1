@@ -19,7 +19,7 @@ MediaPlayer.dependencies.WebServiceLoader = function () {
             	trhoughSegMetrics = null;
 
                 xmlhttp.open("GET", url, true);
-                xmlhttp.setRequestHeader("Content-Type", "application/json; charset=utf-8");
+                xmlhttp.setRequestHeader("Content-Type", "multipart/form-data");
             	
             }else{
             
@@ -30,7 +30,7 @@ MediaPlayer.dependencies.WebServiceLoader = function () {
                 self.debug.log("trhoughSegMetrics: "+ trhoughSegMetrics.length);
                 
                 xmlhttp.open("POST", url, true);
-                xmlhttp.setRequestHeader("Content-Type", "application/json; charset=utf-8");
+                xmlhttp.setRequestHeader("Content-Type", "multipart/form-data");
             }
         
         	arqJson = '{"bufferLevelMetrics":' +JSON.stringify(bufferLevelMetrics);
