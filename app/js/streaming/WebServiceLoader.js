@@ -10,16 +10,17 @@ MediaPlayer.dependencies.WebServiceLoader = function () {
     doLoad = function (metrics, metricsBaseline) {
             var xmlhttp = new XMLHttpRequest(),
                 self = this, 
-                url = "http://localhost/dash_vod/webservice.php";
+                url = "http://192.168.3.3/dash_vod/webservice.php";
         		runWebservice++;
 
             if ( metrics == 0 && metricsBaseline == 0){
             	
             	bufferLevelMetrics = null;
             	trhoughSegMetrics = null;
-
-                xmlhttp.open("GET", url+"?comando='python /home/vod/cenarios_scripts/scenario1.py'", true);
-                xmlhttp.setRequestHeader("Content-Type", "multipart/form-data");
+            	url += "?comando=/home/vod/dash_cenarios_scripts/scenario1.py";
+                xmlhttp.open("GET", url, true);
+            	self.debug.log(url);
+                xmlhttp.setRequestHeader("Content-Type", "text/html");
             	
             }else{
             

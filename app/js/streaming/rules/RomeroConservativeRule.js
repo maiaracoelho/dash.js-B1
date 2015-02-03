@@ -18,8 +18,8 @@ MediaPlayer.rules.RomeroConservativeRule = function () {
 			
 			through = (bandwidth * segDuration)/downloadTime; 
 			
-			self.debug.log("bandwidth: " + bandwidth);
-			self.debug.log("through: " + through);
+			//self.debug.log("bandwidth: " + bandwidth);
+			//self.debug.log("through: " + through);
 			
     		self.metricsBaselinesModel.updateThroughputSeg(throughList[i], bandwidth, through);
 
@@ -84,33 +84,46 @@ MediaPlayer.rules.RomeroConservativeRule = function () {
         	           
         	throughput = (currentBandwidth * lastRequest.mediaduration)/downloadTime ; 	//verificar valores
 			newDownloadRatio = throughput * SENSIVITY;
-			self.debug.log("newDownloadRatio: " + newDownloadRatio + "bps");
 
             self.debug.log("lastRequest Type: " + lastRequest.stream );
-            self.debug.log("lastRequest.tfinish: " + lastRequest.tfinish);
-            self.debug.log("downloadTime: " + downloadTime + "s");
+            self.debug.log("downloadTime: " + (downloadTime*1000) + "ms");
             self.debug.log("lastRequest.mediaduration: " + lastRequest.mediaduration + "s");
 
             if (isNaN(newDownloadRatio)) {
                 self.debug.log("Invalid newDownloadRatio, bailing.");
                 deferred.resolve(new MediaPlayer.rules.SwitchRequest());
             } else {
-            	
+				self.debug.log("newDownloadRatio: " + newDownloadRatio + " currentBandwidth: " + currentBandwidth);
+
 				if (newDownloadRatio > currentBandwidth) {
+					if (representationCur == max){
+    					self.debug.log("No change.");
+		                return Q.when(new MediaPlayer.rules.SwitchRequest(MediaPlayer.rules.SwitchRequest.prototype.NO_CHANGE));
+					}
 					while (representationCur < max){
+						
 						representation3 = self.manifestExt.getRepresentationFor1(representationCur + 1, data);
 						oneUpBandwidth = self.manifestExt.getBandwidth1(representation3);
-
+						
         				if (oneUpBandwidth < newDownloadRatio){
         					self.debug.log("switch up.");
-							current += 1;
+        					current += 1;
+						}
+        				else{
+							self.debug.log("Current1: " + current + "representationCur1: " + representationCur);
+							return Q.when(new MediaPlayer.rules.SwitchRequest(current));
+
 						}
 						representationCur++;
 					}
-					self.debug.log("Current1: " + current + "representationCur1: " + representationCur);
+					self.debug.log("Current11: " + current + "representationCur11: " + representationCur);
 					deferred.resolve(new MediaPlayer.rules.SwitchRequest(current));
-														
 				}else{
+
+					if(representationCur == 0){
+    					self.debug.log("No change.");
+		                return Q.when(new MediaPlayer.rules.SwitchRequest(MediaPlayer.rules.SwitchRequest.prototype.NO_CHANGE));
+					}
 					while (representationCur > 0){
 						representation1 = self.manifestExt.getRepresentationFor1(representationCur - 1, data);
 						oneDownBandwidth = self.manifestExt.getBandwidth1(representation1);
@@ -118,14 +131,16 @@ MediaPlayer.rules.RomeroConservativeRule = function () {
 						if(oneDownBandwidth > newDownloadRatio){
 							self.debug.log(" switch Down.");
 							current -= 1;
+						}else{
+							self.debug.log("Current2: " + current + "representationCur2: " + representationCur);
+							return Q.when(new MediaPlayer.rules.SwitchRequest(current));
 						}
 						representationCur--;
 					}
-					self.debug.log("Current2: " + current + "representationCur2: " + representationCur);
-					deferred.resolve(new MediaPlayer.rules.SwitchRequest(current));	
+					self.debug.log("Current22: " + current + "representationCur22: " + representationCur);
+					deferred.resolve(new MediaPlayer.rules.SwitchRequest(current));
 				}
             }										
-            
             return deferred.promise;
         }
     };

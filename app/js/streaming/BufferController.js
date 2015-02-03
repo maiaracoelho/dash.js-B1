@@ -268,7 +268,6 @@ MediaPlayer.dependencies.BufferController = function () {
                                     						
                                     						 /**Chamar o webservice em PHP para o armazenamento dos dados**/
                                     			            var metrics = self.metricsModel.getMetricsFor(type);
-                                    			            
                                     			            var metricsBaseline = self.metricsBaselinesModel.getMetricsBaselineFor(type);                             			                        	 
                                     			            
                                     			            if(metrics != null && metricsBaseline != null){

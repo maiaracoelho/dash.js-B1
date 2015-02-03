@@ -24,8 +24,29 @@ MediaPlayer.rules.DownloadRatioRule = function () {
      * This rule is not sufficient by itself.  We may be able to download a fragment
      * fine, but if the buffer is not sufficiently long playback hiccups will happen.
      * Be sure to use this rule in conjuction with the InsufficientBufferRule.
-     **/
+     *
+    var insertThroughputs = function (throughList, availableRepresentations) {
+		var self = this, representation, bandwidth, quality, downloadTime, segDuration, through;
+		
+		for(var i = 0; i < throughList.length; i++){
+			quality = throughList[i].quality;
+			representation = availableRepresentations[quality];
+			bandwidth = self.metricsExt.getBandwidthForRepresentation(representation.id);
+			bandwidth /= 1000; //bit/ms
+			
+			downloadTime = throughList[i].finishTime.getTime() - throughList[i].responseTime.getTime();
+			segDuration = throughList[i].duration * 1000; 
+			
+			through = (bandwidth * segDuration)/downloadTime; 
+			
+			//self.debug.log("bandwidth: " + bandwidth);
+			//self.debug.log("through: " + through);
+			
+    		self.metricsBaselinesModel.updateThroughputSeg(throughList[i], bandwidth, through);
 
+		}
+    },*/
+		
     var checkRatio = function (newIdx, currentBandwidth, data) {
             var self = this,
                 deferred = Q.defer();
@@ -49,6 +70,8 @@ MediaPlayer.rules.DownloadRatioRule = function () {
         debug: undefined,
         manifestExt: undefined,
         metricsExt: undefined,
+        //metricsBaselinesModel: undefined,
+
         /**
          * @param {current} current - Índice da representação corrente
          * @param {metrics} metrics - Metricas armazenadas em MetricsList
@@ -81,6 +104,8 @@ MediaPlayer.rules.DownloadRatioRule = function () {
                 //self.debug.log("No requests made for this stream yet, bailing.");
                 return Q.when(new MediaPlayer.rules.SwitchRequest());
             }
+            
+            //insertThroughputs.call(self, metricsBaseline.ThroughSeg, availableRepresentations);
 
             totalTime = (lastRequest.tfinish.getTime() - lastRequest.trequest.getTime()) / 1000;
             downloadTime = (lastRequest.tfinish.getTime() - lastRequest.tresponse.getTime()) / 1000;

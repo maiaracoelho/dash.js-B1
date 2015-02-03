@@ -152,83 +152,83 @@ MediaPlayer.dependencies.AbrController = function () {
                                     funcs.push(rules[i].checkIndex(quality, metrics, data, metricsBaseline, availableRepresentations));
                                 }
                                 Q.all(funcs).then(
-                                    function (results) {
-                                        //self.debug.log("Resultados: "+results);
-                                        values = {};
-                                        values[MediaPlayer.rules.SwitchRequest.prototype.STRONG] = MediaPlayer.rules.SwitchRequest.prototype.NO_CHANGE;
-                                        values[MediaPlayer.rules.SwitchRequest.prototype.WEAK] = MediaPlayer.rules.SwitchRequest.prototype.NO_CHANGE;
-                                        values[MediaPlayer.rules.SwitchRequest.prototype.DEFAULT] = MediaPlayer.rules.SwitchRequest.prototype.NO_CHANGE;
+                                        function (results) {
+                                            //self.debug.log(results);
+                                            values = {};
+                                            values[MediaPlayer.rules.SwitchRequest.prototype.STRONG] = MediaPlayer.rules.SwitchRequest.prototype.NO_CHANGE;
+                                            values[MediaPlayer.rules.SwitchRequest.prototype.WEAK] = MediaPlayer.rules.SwitchRequest.prototype.NO_CHANGE;
+                                            values[MediaPlayer.rules.SwitchRequest.prototype.DEFAULT] = MediaPlayer.rules.SwitchRequest.prototype.NO_CHANGE;
 
-                                        for (i = 0, len = results.length; i < len; i += 1) {
-                                            req = results[i];
-                                            if (req.quality !== MediaPlayer.rules.SwitchRequest.prototype.NO_CHANGE) {
-                                                values[req.priority] = Math.min(values[req.priority], req.quality);
+                                            for (i = 0, len = results.length; i < len; i += 1) {
+                                                req = results[i];
+                                                if (req.quality !== MediaPlayer.rules.SwitchRequest.prototype.NO_CHANGE) {
+                                                    values[req.priority] = Math.min(values[req.priority], req.quality);
+                                                }
                                             }
 
-                                        }
-
-                                        if (values[MediaPlayer.rules.SwitchRequest.prototype.WEAK] !== MediaPlayer.rules.SwitchRequest.prototype.NO_CHANGE) {
-                                            newConfidence = MediaPlayer.rules.SwitchRequest.prototype.WEAK;
-                                            newQuality = values[MediaPlayer.rules.SwitchRequest.prototype.WEAK];
-                                        }
-
-                                        if (values[MediaPlayer.rules.SwitchRequest.prototype.DEFAULT] !== MediaPlayer.rules.SwitchRequest.prototype.NO_CHANGE) {
-                                            newConfidence = MediaPlayer.rules.SwitchRequest.prototype.DEFAULT;
-                                            newQuality = values[MediaPlayer.rules.SwitchRequest.prototype.DEFAULT];
-                                        }
-
-                                        if (values[MediaPlayer.rules.SwitchRequest.prototype.STRONG] !== MediaPlayer.rules.SwitchRequest.prototype.NO_CHANGE) {
-                                            newConfidence = MediaPlayer.rules.SwitchRequest.prototype.STRONG;
-                                            newQuality = values[MediaPlayer.rules.SwitchRequest.prototype.STRONG];
-                                        }
-
-                                        if (newQuality !== MediaPlayer.rules.SwitchRequest.prototype.NO_CHANGE && newQuality !== undefined) {
-                                            quality = newQuality;
-                                        }
-
-                                        if (newConfidence !== MediaPlayer.rules.SwitchRequest.prototype.NO_CHANGE && newConfidence !== undefined) {
-                                            confidence = newConfidence;
-                                        }
-                                        
-                                        self.manifestExt.getRepresentationCount(data).then(
-                                            function (max) {
-                                                // be sure the quality valid!
-                                                if (quality < 0) {
-                                                    quality = 0;
-                                                }
-                                                // zero based
-                                                if (quality >= max) {
-                                                    quality = max - 1;
-                                                }
-
-                                                if (confidence != MediaPlayer.rules.SwitchRequest.prototype.STRONG &&
-                                                    confidence != MediaPlayer.rules.SwitchRequest.prototype.WEAK) {
-                                                    confidence = MediaPlayer.rules.SwitchRequest.prototype.DEFAULT;
-                                                }
-
-                                                setInternalQuality(type, quality);
-                                                self.debug.log("New quality of " + quality + " Type: "+type + " Confidence: "+confidence);
-
-                                                setInternalConfidence(type, confidence);
-
-                                                deferred.resolve({quality: quality, confidence: confidence});
+                                            if (values[MediaPlayer.rules.SwitchRequest.prototype.WEAK] !== MediaPlayer.rules.SwitchRequest.prototype.NO_CHANGE) {
+                                                newConfidence = MediaPlayer.rules.SwitchRequest.prototype.WEAK;
+                                                newQuality = values[MediaPlayer.rules.SwitchRequest.prototype.WEAK];
                                             }
-                                        );
-                                    }
-                                );
-                            }
-                        );
-                       }
-                       );
+
+                                            if (values[MediaPlayer.rules.SwitchRequest.prototype.DEFAULT] !== MediaPlayer.rules.SwitchRequest.prototype.NO_CHANGE) {
+                                                newConfidence = MediaPlayer.rules.SwitchRequest.prototype.DEFAULT;
+                                                newQuality = values[MediaPlayer.rules.SwitchRequest.prototype.DEFAULT];
+                                            }
+
+                                            if (values[MediaPlayer.rules.SwitchRequest.prototype.STRONG] !== MediaPlayer.rules.SwitchRequest.prototype.NO_CHANGE) {
+                                                newConfidence = MediaPlayer.rules.SwitchRequest.prototype.STRONG;
+                                                newQuality = values[MediaPlayer.rules.SwitchRequest.prototype.STRONG];
+                                            }
+
+                                            if (newQuality !== MediaPlayer.rules.SwitchRequest.prototype.NO_CHANGE && newQuality !== undefined) {
+                                                quality = newQuality;
+                                            }
+
+                                            if (newConfidence !== MediaPlayer.rules.SwitchRequest.prototype.NO_CHANGE && newConfidence !== undefined) {
+                                                confidence = newConfidence;
+                                            }
+
+                                            self.manifestExt.getRepresentationCount(data).then(
+                                                function (max) {
+                                                    // be sure the quality valid!
+                                                    if (quality < 0) {
+                                                        quality = 0;
+                                                    }
+                                                    // zero based
+                                                    if (quality >= max) {
+                                                        quality = max - 1;
+                                                    }
+
+                                                    if (confidence != MediaPlayer.rules.SwitchRequest.prototype.STRONG &&
+                                                        confidence != MediaPlayer.rules.SwitchRequest.prototype.WEAK) {
+                                                        confidence = MediaPlayer.rules.SwitchRequest.prototype.DEFAULT;
+                                                    }
+
+                                                    setInternalQuality(type, quality);
+                                                    //self.debug.log("New quality of " + quality);
+
+                                                    setInternalConfidence(type, confidence);
+                                                    //self.debug.log("New confidence of " + confidence);
+
+                                                    deferred.resolve({quality: quality, confidence: confidence});
+                                                }
+                                            );
+                                        }
+                                    );
+                                }
+                            );
+                        }
+                    );
                     }
                 );
-            } else {
-                self.debug.log("Unchanged quality of " + quality);
-                deferred.resolve({quality: quality, confidence: confidence});
-            }
+                } else {
+                    self.debug.log("Unchanged quality of " + quality);
+                    deferred.resolve({quality: quality, confidence: confidence});
+                }
 
-            return deferred.promise;
-        },
+                return deferred.promise;
+            },
         
         setPlaybackQuality: function (type, newPlaybackQuality) {
             var quality = getInternalQuality(type);
